@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const envSchema = z.object({
-  NODE_ENV: z.enum(['development', 'proudction', 'test']),
+  NODE_ENV: z.enum(['development', 'prodction', 'test']),
   PORT: z.coerce.number().min(1000).max(65535),
   MONGO_URI: z.string(),
 });
