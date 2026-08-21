@@ -5,21 +5,26 @@ import { config } from './config/config.js';
 import { connectDB } from './db/index.js';
 import { errorHandler } from './middlewares/error-handler.js';
 import cors from 'cors';
-//import { isDevelopment, isProduction } from './config/config.js';
+import { isDevelopment, isProduction } from './config/config.js';
 
 const app = express();
 
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
-  .split(',')
-  .map((origin) => origin.trim());
+const developmentAllowedOrigins = ['http://localhost:5173'];
+const productionAllowedOrigins = [
+  'https://daniel-express-mission5.netlify.app/', // 실제 배포된 프론트엔드 주소로 교체
+];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) {
-        // Postman, 서버-to-서버 요청 등 origin이 없는 경우
+      // 개발 환경: origin 없는 요청(Postman, 서버 간 통신 등) 허용
+      if (isDevelopment && !origin) {
         return callback(null, true);
       }
+
+      const allowedOrigins = isDevelopment
+        ? developmentAllowedOrigins
+        : productionAllowedOrigins;
 
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
