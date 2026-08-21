@@ -7,6 +7,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
+    "start": "node src/server.js",
     "prod": "cross-env node --env-file=./env/.env.production dist/src/server.js",
     "dev": "cross-env  node --env-file=./env/.env.development --watch src/server.js",
     "lint": "eslint \"src/**/*.js\"",

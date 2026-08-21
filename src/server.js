@@ -5,19 +5,23 @@ import { config } from './config/config.js';
 import { connectDB } from './db/index.js';
 import { errorHandler } from './middlewares/error-handler.js';
 import cors from 'cors';
-import { isDevelopment, isProduction } from './config/config.js';
+//import { isDevelopment, isProduction } from './config/config.js';
 
 const app = express();
+
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim());
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (isDevelopment && !origin) {
+      if (!origin) {
+        // Postman, 서버-to-서버 요청 등 origin이 없는 경우
         return callback(null, true);
       }
 
-      const developmentAllowedOrigins = ['http://localhost:5173'];
-      if (isDevelopment && developmentAllowedOrigins.includes(origin)) {
+      if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
@@ -33,7 +37,5 @@ app.use('/', router);
 app.use(errorHandler);
 
 app.listen(config.PORT, () => {
-  console.log(
-    `Sprint mission 5 Server running on http://localhost:${config.PORT}`,
-  );
+  console.log('Sprint mission 5 Server running');
 });
