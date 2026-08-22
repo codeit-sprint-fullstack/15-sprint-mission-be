@@ -19,7 +19,6 @@ app.use(
       console.log('요청 origin:', origin);
       console.log('허용 목록:', allowedOrigins);
       if (!origin) {
-        // Postman, 서버-to-서버 요청 등 origin이 없는 경우
         return callback(null, true);
       }
 
