@@ -1,6 +1,6 @@
 # 판다마켓 API
 
-스프린트 미션 5의 백엔드 프로젝트입니다. Express와 MongoDB Atlas를 사용해 상품 등록, 상세 조회, 부분 수정 API를 구현하고 있습니다.
+스프린트 미션 5의 백엔드 프로젝트입니다. Express와 MongoDB Atlas를 사용해 상품 등록, 조회, 수정, 삭제 API를 구현했습니다.
 
 ## 기술 스택
 
@@ -14,7 +14,10 @@
 
 ### 1. 의존성 설치
 
+저장소를 내려받은 뒤 `server` 폴더로 이동합니다.
+
 ```bash
+cd server
 npm install
 ```
 
@@ -59,9 +62,20 @@ MongoDB 연결 성공
 | 메서드 | 경로 | 설명 | 정상 상태 코드 |
 | --- | --- | --- | --- |
 | `GET` | `/` | 서버 상태 확인 | `200` |
+| `GET` | `/api/products` | 상품 목록 조회 | `200` |
 | `POST` | `/api/products` | 상품 등록 | `201` |
 | `GET` | `/api/products/:id` | 상품 상세 조회 | `200` |
 | `PATCH` | `/api/products/:id` | 전달된 상품 필드 수정 | `200` |
+| `DELETE` | `/api/products/:id` | 상품 삭제 | `204` |
+
+상품 목록 조회에는 다음 쿼리 파라미터를 사용할 수 있습니다.
+
+| 파라미터 | 기본값 | 설명 |
+| --- | --- | --- |
+| `offset` | `0` | 건너뛸 상품 수 |
+| `limit` | `10` | 한 번에 조회할 상품 수 |
+| `orderBy` | `recent` | 최신순 정렬. `recent`만 지원 |
+| `keyword` | 빈 문자열 | 상품명 또는 상품 소개 검색어 |
 
 상품 등록 요청 예시:
 
@@ -89,15 +103,16 @@ MongoDB 연결 성공
 ## 폴더 구조
 
 ```text
-server/
-├── src/
-│   ├── models/
-│   │   └── Product.js
-│   ├── routes/
-│   │   └── products.js
-│   └── server.js
-├── .env
-├── package.json
+15-sprint-mission-be/
+├── server/
+│   ├── src/
+│   │   ├── models/
+│   │   │   └── Product.js
+│   │   ├── routes/
+│   │   │   └── products.js
+│   │   └── server.js
+│   ├── .env
+│   └── package.json
 └── README.md
 ```
 
@@ -108,8 +123,7 @@ server/
 - [x] Product 스키마
 - [x] 상품 등록 API
 - [x] 상품 상세 조회 API
-- [x] 상품 부분 수정 성공 흐름
-- [ ] 상품 수정 입력값 검증 마무리
-- [ ] 상품 삭제 API
-- [ ] 상품 목록 조회, 페이지네이션, 최신순 정렬, 검색
+- [x] 상품 부분 수정과 입력값 검증
+- [x] 상품 삭제 API
+- [x] 상품 목록 조회, offset 페이지네이션, 최신순 정렬, 검색
 - [ ] Render 배포
