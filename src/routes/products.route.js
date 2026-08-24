@@ -44,7 +44,11 @@ productsRouter.get('/', async (req, res, next) => {
 
     const totalCount = await Product.countDocuments(filter);
 
-    res.json({
+    if(!products.length) {
+      throw new NotFoundException('제품을 찾을수 없음');
+    }
+
+    res.status(200).json({
       success: true,
       data: products,
       currentPage: page,
