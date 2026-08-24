@@ -107,6 +107,25 @@ productsRouter.patch('/:id', async (req, res) => {
     createdAt: product.createdAt,
     updatedAt: product.updatedAt,
   });
+}); //숨김
+
+//15. 상품 삭제 API 구현 및 Mouse 테스트 상품 제거
+productsRouter.delete('/:id', async (req, res) => {
+  if (!mongoose.isObjectIdOrHexString(req.params.id)) {
+    return res.status(400).json({
+      message: '올바르지 않은 상품 ID 입니다.',
+    });
+  }
+
+  const product = await Product.findByIdAndDelete(req.params.id);
+
+  if (!product) {
+    return res.status(404).json({
+      message: '상품을 찾을 수 없습니다.',
+    });
+  }
+
+  return res.status(204).send();
 });
 
 //요청 본문의 상품 정보를 MogoDB에 저장
