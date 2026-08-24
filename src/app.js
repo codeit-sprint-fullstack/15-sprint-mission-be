@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
-import { env } from "./config/env.js";
+import productRoutes from "./routes/product.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
+import { env } from "./config/env.js";
 
 const app = express();
 
@@ -24,6 +25,9 @@ app.get("/health", (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+// API 라우터 등록
+app.use("/api/products", productRoutes);
 
 // 에러 핸들링
 app.use(errorHandler);
