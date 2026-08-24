@@ -36,29 +36,39 @@ productsRouter.get('/', async (req, res) => {
       message: 'orderBy는 recent만 사용할 수 있습니다.',
     });
   }
-  //21.검색 조건 만들기
-  if (orderBy !== 'recent') {
-    return res.status(400).json({
-      message: 'orderBy는 recent만 사용할 수 있습니다.',
-    });
-  }
+  // //21.검색 조건 만들기 (중복 삭제)
+  // if (orderBy !== 'recent') {
+  //   return res.status(400).json({
+  //     message: 'orderBy는 recent만 사용할 수 있습니다.',
+  //   });
+  // }
 
   //22.검색어를 정규식의 특수문자가 아닌 일반 문자로 처리
   const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-  const filter = keyword
-    ? {
-        $or: [
-          {
-            name: {
-              $regex: escapedKeyword,
-              $options: 'i',
-            },
-          },
-          { description: { $regex: escapedKeyword, $options: 'i' } },
-        ],
-      }
-    : {};
+  // const filter = keyword
+  //   ? {
+  //       $or: [
+  //         {
+  //           name: {
+  //             $regex: escapedKeyword,
+  //             $options: 'i',
+  //           },
+  //         },
+  //         { description: { $regex: escapedKeyword, $options: 'i' } },
+  //       ],
+  //     }
+  //   : {};
+  // 검색 조건은 우선 빈 객체로 시작합니다.
+  const filter = {};
+
+  if (keyword) {
+    // 검색어를 대소문자 구분 없는 정규식으로 만듭니다.
+    const searchRegex = new RegExp(escapedKeyword, 'i');
+
+    // 상품명 또는 상품 소개에서 검색합니다.
+    filter.$or = [{ name: searchRegex }, { description: searchRegex }];
+  }
 
   //페이지네이션과 관계없이 전체 상품 수를 조회
   //23. 두 쿼리에 filter적용

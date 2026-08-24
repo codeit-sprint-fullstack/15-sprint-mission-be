@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
 //공통 오류처리기 추가
 //처리되지 않은 오유를 일관된 json응답으로 반환
 app.use((error, req, res, next) => {
-  if (res.headerSent) {
+  if (res.headersSent) {
     return next(error);
   }
 
