@@ -62,14 +62,35 @@ productsRouter.patch('/:id', async (req, res) => {
     updates.tags = tags;
   }
 
-  const product = await Product.findByIdAndUpdate(
-    req.params.id,
-    updates,
-    {
-      new: true,
-      runValidators: true,
-    },
-  );
+  //14. PATCH 입력값 검증
+  if (Object.keys(updates).length === 0) {
+    return res.status(400).json({
+      message: '수정할 상품 정보를 입력해주세요.',
+    });
+  }
+
+  //15. PATCH에 포함된 값의 자료형과 빈 내용을 검사
+  const hasInvalidUpdate =
+    (name !== undefined && (typeof name !== 'string' || name.trim() === '')) ||
+    (description !== undefined &&
+      (typeof description !== 'string' || description.trim() === '')) ||
+    (price !== undefined &&
+      (typeof price !== 'number' || !Number.isFinite(price))) ||
+    (tags !== undefined &&
+      (!Array.isArray(tags) ||
+        tags.length === 0 ||
+        tags.some((tag) => typeof tag !== 'string' || tag.trim() === '')));
+
+  if (hasInvalidUpdate) {
+    return res.status(400).json({
+      message: '입력값의 형식이 올바르지 않습니다.',
+    });
+  }
+
+  const product = await Product.findByIdAndUpdate(req.params.id, updates, {
+    new: true,
+    runValidators: true,
+  });
 
   if (!product) {
     return res.status(404).json({
