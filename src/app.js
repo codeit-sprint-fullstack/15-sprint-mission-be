@@ -1,10 +1,11 @@
 import express from "express";
 import cors from "cors";
 import { env } from "./config/env.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
 
-// 미들웨어 설정
+// cors
 app.use(
   cors({
     origin: env.CLIENT_URL,
@@ -12,12 +13,8 @@ app.use(
   }),
 );
 
+// json 파싱
 app.use(express.json());
-
-// 기본 엔드포인트
-app.get("/", (req, res) => {
-  res.send("Express 서버 시작");
-});
 
 // 헬스체크 라우트
 app.get("/health", (req, res) => {
@@ -27,5 +24,8 @@ app.get("/health", (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+// 에러 핸들링
+app.use(errorHandler);
 
 export default app;
