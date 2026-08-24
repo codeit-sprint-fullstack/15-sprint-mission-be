@@ -7,6 +7,84 @@ import mongoose from 'mongoose';
 //2. 상품 API를 관리할 라우터 생성
 const productsRouter = express.Router();
 
+//16. 상품 목록을 최신순으로 조회
+productsRouter.get('/', async (req, res) => {
+  //URL 쿼리에서 페이지네이션 값을 읽습니다.
+  const offset = Number(req.query.offset ?? 0);
+  const limit = Number(req.query.limit ?? 10);
+  //18. orderBy=recent만 허용
+  const orderBy = req.query.orderBy ?? 'recent';
+  //20.검색어 읽기
+  const keyword = String(req.query.keyword ?? '').trim();
+
+  //17.잘못된 쿼리 검사(유효성 검사)
+  const hasInvalidPagination =
+    !Number.isInteger(offset) ||
+    offset < 0 ||
+    !Number.isInteger(limit) ||
+    limit < 1;
+
+  if (hasInvalidPagination) {
+    return res.status(400).json({
+      message: 'offset과 limit은 올바른 양의 정수여야 합니다.',
+    });
+  }
+
+  //19. 정렬값 검사
+  if (orderBy !== 'recent') {
+    return res.status(400).json({
+      message: 'orderBy는 recent만 사용할 수 있습니다.',
+    });
+  }
+  //21.검색 조건 만들기
+  if (orderBy !== 'recent') {
+    return res.status(400).json({
+      message: 'orderBy는 recent만 사용할 수 있습니다.',
+    });
+  }
+
+  //22.검색어를 정규식의 특수문자가 아닌 일반 문자로 처리
+  const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  const filter = keyword
+    ? {
+        $or: [
+          {
+            name: {
+              $regex: escapedKeyword,
+              $options: 'i',
+            },
+          },
+          { description: { $regex: escapedKeyword, $options: 'i' } },
+        ],
+      }
+    : {};
+
+  //페이지네이션과 관계없이 전체 상품 수를 조회
+  //23. 두 쿼리에 filter적용
+  const totalCount = await Product.countDocuments(filter);
+
+  //최신순 정렬 후 offset만큼 건너뛰고 limit개를 조회
+  //24. 두 쿼리에 filter적용
+  const products = await Product.find(filter)
+    .sort({ createdAt: -1 })
+    .skip(offset)
+    .limit(limit)
+    .select('name price createdAt');
+
+  const list = products.map((product) => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    createdAt: product.createdAt,
+  }));
+
+  return res.status(200).json({
+    list,
+    totalCount,
+  });
+});
+
 //10.URL의 상품 ID를 이용해 상품 한 개를 조회
 // URL의 상품 ID를 이용해 상품 한 개를 조회합니다.
 productsRouter.get('/:id', async (req, res) => {
