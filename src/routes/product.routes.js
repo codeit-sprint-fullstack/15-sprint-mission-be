@@ -29,4 +29,6 @@ const createSchema = z.object({
 
 router.post("/", validate(createSchema), productController.createProduct);
 
+router.get("/:id", productController.getProduct);
+
 export default router;
