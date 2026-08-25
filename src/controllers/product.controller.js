@@ -10,7 +10,7 @@ const checkValidId = (id) => {
 };
 
 export const createProduct = async (req, res) => {
-  const { name, description, price, tags } = req.body;
+  const { name, description, price, tags } = res.locals.validated.body;
 
   const product = await Product.create({ name, description, price, tags });
 
@@ -41,7 +41,9 @@ export const updateProduct = async (req, res) => {
   const { id } = req.params;
   checkValidId(id);
 
-  if (Object.keys(req.body).length === 0) {
+  const validatedBody = res.locals.validated.body;
+
+  if (Object.keys(validatedBody).length === 0) {
     throw new AppError("수정할 데이터를 하나 이상 입력해 주세요", 400);
   }
 
@@ -50,7 +52,7 @@ export const updateProduct = async (req, res) => {
     throw new AppError("상품을 찾을 수 없습니다", 404);
   }
 
-  Object.assign(product, req.body);
+  Object.assign(product, validatedBody);
   await product.save();
 
   res.status(200).json({
