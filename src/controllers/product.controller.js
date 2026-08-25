@@ -79,3 +79,39 @@ export const deleteProduct = async (req, res) => {
     data: null,
   });
 };
+
+export const getProducts = async (req, res) => {
+  const { page, limit, keyword } = res.locals.validated.query;
+
+  const query = {};
+  if (keyword) {
+    query.$or = [
+      { name: { $regex: keyword, $options: "i" } },
+      { description: { $regex: keyword, $options: "i" } },
+    ];
+  }
+
+  const skip = (page - 1) * limit;
+
+  const products = await Product.find(query)
+    .select("id name price createdAt")
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  const totalCount = await Product.countDocuments(query);
+  const totalPages = Math.ceil(totalCount / limit);
+
+  res.status(200).json({
+    success: true,
+    message: "상품 목록 조회 성공",
+    data: {
+      items: products,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalCount,
+      },
+    },
+  });
+};

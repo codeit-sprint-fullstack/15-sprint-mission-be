@@ -29,8 +29,17 @@ const createSchema = z.object({
 
 const updateSchema = createSchema.partial();
 
+const querySchema = z.object({
+  page: z.coerce.number().min(1).default(1),
+  limit: z.coerce.number().min(1).max(100).default(10),
+  keyword: z.string().default(""),
+});
+
 // 상품 등록
 router.post("/", validate(createSchema), productController.createProduct);
+
+// 상품 목록 조회
+router.get("/", validate(querySchema, "query"), productController.getProducts);
 
 // 상품 상세 조회
 router.get("/:id", productController.getProduct);
