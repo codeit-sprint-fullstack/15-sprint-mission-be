@@ -4,6 +4,7 @@ import 'dotenv/config';
 
 import { router } from './routes/index.js';
 import { errorHandler } from './middlewares/error-handler.js';
+import { logger } from './middlewares/logger.js';
 import { config } from './config/config.js';
 import { connectDB } from './db/index.js';
 
@@ -14,6 +15,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(logger);
 
 app.get('/', (req, res) => {
   res.status(200).send('판다마켓 API 서버가 정상 동작 중입니다.');

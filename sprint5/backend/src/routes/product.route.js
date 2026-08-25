@@ -1,6 +1,6 @@
 import express from 'express';
 import { NotFoundException } from '../errors/not-found-exception.js';
-import Product from '../models/product.model.js';
+import { Product } from '../models/product.model.js';
 
 export const productsRouter = express.Router();
 

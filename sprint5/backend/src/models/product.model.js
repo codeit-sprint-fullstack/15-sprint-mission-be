@@ -23,12 +23,10 @@ const productSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, 
-    toJSON: {
-      virtuals: true, 
-      versionKey: false, 
-    },
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
-export default mongoose.model('Product', productSchema);
+export const Product = mongoose.model('Product', productSchema);
