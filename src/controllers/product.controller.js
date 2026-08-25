@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 import { Product } from "../models/product.model.js";
-import AppError from "../utils/AppError.js";
+import { AppError } from "../utils/AppError.js";
 
 const checkValidId = (id) => {
   if (!mongoose.isValidObjectId(id)) {

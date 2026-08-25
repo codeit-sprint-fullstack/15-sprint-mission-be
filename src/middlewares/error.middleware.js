@@ -1,4 +1,4 @@
-import AppError from "../utils/AppError.js";
+import { AppError } from "../utils/AppError.js";
 
 export const errorHandler = (err, req, res, next) => {
   console.error("🚨 [서버 에러 로그]:", err);
