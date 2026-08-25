@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import productRoutes from "./routes/product.routes.js";
-import { errorHandler } from "./middlewares/error.middleware.js";
+import { errorHandler, notFound } from "./middlewares/error.middleware.js";
 import { env } from "./config/env.js";
 
 const app = express();
@@ -28,6 +28,9 @@ app.get("/health", (req, res) => {
 
 // API 라우터 등록
 app.use("/api/products", productRoutes);
+
+// API 주소가 없는 경우의 처리
+app.use(notFound);
 
 // 에러 핸들링
 app.use(errorHandler);

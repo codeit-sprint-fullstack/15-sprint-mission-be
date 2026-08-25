@@ -25,3 +25,8 @@ export const errorHandler = (err, req, res, next) => {
     message: "서버 내부에서 문제가 발생했습니다.",
   });
 };
+
+// 404 처리용 미들웨어
+export const notFound = (req, res, next) => {
+  throw new AppError(`요청한 경로를 찾을 수 없습니다: ${req.originalUrl}`, 404);
+};
