@@ -27,8 +27,15 @@ const createSchema = z.object({
     .max(10, { message: "태그는 최대 10개까지만 가능합니다" }),
 });
 
+const updateSchema = createSchema.partial();
+
+// 상품 등록
 router.post("/", validate(createSchema), productController.createProduct);
 
+// 상품 상세 조회
 router.get("/:id", productController.getProduct);
+
+// 상품 수정
+router.patch("/:id", validate(updateSchema), productController.updateProduct);
 
 export default router;

@@ -36,3 +36,26 @@ export const getProduct = async (req, res) => {
     data: product,
   });
 };
+
+export const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  checkValidId(id);
+
+  if (Object.keys(req.body).length === 0) {
+    throw new AppError("수정할 데이터를 하나 이상 입력해 주세요", 400);
+  }
+
+  const product = await Product.findById(id);
+  if (!product) {
+    throw new AppError("상품을 찾을 수 없습니다", 404);
+  }
+
+  Object.assign(product, req.body);
+  await product.save();
+
+  res.status(200).json({
+    success: true,
+    message: "상품 수정 성공",
+    data: product,
+  });
+};
