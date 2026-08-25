@@ -38,4 +38,7 @@ router.get("/:id", productController.getProduct);
 // 상품 수정
 router.patch("/:id", validate(updateSchema), productController.updateProduct);
 
+// 상품 삭제
+router.delete("/:id", productController.deleteProduct);
+
 export default router;

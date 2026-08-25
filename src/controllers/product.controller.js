@@ -59,3 +59,21 @@ export const updateProduct = async (req, res) => {
     data: product,
   });
 };
+
+export const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  checkValidId(id);
+
+  const product = await Product.findById(id);
+  if (!product) {
+    throw new AppError("상품을 찾을 수 없습니다", 404);
+  }
+
+  await product.deleteOne();
+
+  res.status(200).json({
+    success: true,
+    message: "상품 삭제 성공",
+    data: null,
+  });
+};
