@@ -8,23 +8,19 @@ const router = express.Router();
 const createSchema = z.object({
   name: z
     .string()
-    .min(1, { message: "1자 이상 입력해 주세요" })
-    .max(10, { message: "10자 이내로 입력해 주세요" }),
+    .min(1, "1자 이상 입력해 주세요")
+    .max(10, "10자 이내로 입력해 주세요"),
   description: z
     .string()
-    .min(10, { message: "10자 이상 입력해 주세요" })
-    .max(100, { message: "100자 이내로 입력해 주세요" }),
+    .min(10, "10자 이상 입력해 주세요")
+    .max(100, "100자 이내로 입력해 주세요"),
   price: z
-    .number({
-      error: "가격은 숫자로 입력해 주세요",
-    })
-    .min(0, {
-      message: "가격은 0원 이상이어야 합니다",
-    }),
+    .number({ error: "가격은 숫자로 입력해 주세요" })
+    .min(0, "가격은 0원 이상이어야 합니다"),
   tags: z
-    .array(z.string().max(5, { message: "5글자 이내로 입력해 주세요" }))
-    .min(1, { message: "태그를 최소 1개는 추가해 주세요" })
-    .max(10, { message: "태그는 최대 10개까지만 가능합니다" }),
+    .array(z.string().max(5, "5글자 이내로 입력해 주세요"))
+    .min(1, "태그를 최소 1개는 추가해 주세요")
+    .max(10, "태그는 최대 10개까지만 가능합니다"),
 });
 
 const updateSchema = createSchema.partial();
