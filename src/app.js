@@ -1,10 +1,18 @@
 import express from "express";
+import helmet from "helmet";
+import morgan from "morgan";
 import cors from "cors";
 import productRoutes from "./routes/product.routes.js";
 import { errorHandler, notFound } from "./middlewares/error.middleware.js";
 import { env } from "./config/env.js";
 
 const app = express();
+
+// 보안 헤더
+app.use(helmet());
+
+// 로깅
+app.use(morgan(env.NODE_ENV === "production" ? "combined" : "dev"));
 
 // cors
 app.use(
