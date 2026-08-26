@@ -1,14 +1,24 @@
-const requiredEnvVars = ["MONGO_URI"];
+import { z } from "zod";
 
-for (const key of requiredEnvVars) {
-  if (!process.env[key]) {
-    throw new Error(`[ENV ERROR] 필수 환경변수가 없습니다: ${key}`);
-  }
+const envSchema = z.object({
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
+  PORT: z.coerce.number().default(5001),
+  MONGO_URI: z.string({
+    error: "MONGO_URI는 필수값입니다",
+  }),
+  CLIENT_URL: z.string().default("http://localhost:5173"),
+});
+
+const result = envSchema.safeParse(process.env);
+
+if (!result.success) {
+  console.error("❌ [ENV ERROR] 환경변수 설정이 잘못되었습니다:");
+  result.error.issues.forEach((issue) => {
+    console.error(` - ${issue.path.join(".")}: ${issue.message}`);
+  });
+  process.exit(1);
 }
 
-export const env = {
-  PORT: process.env.PORT || 5001,
-  NODE_ENV: process.env.NODE_ENV || "development",
-  MONGO_URI: process.env.MONGO_URI,
-  CLIENT_URL: process.env.CLIENT_URL || "http://localhost:5173",
-};
+export const env = result.data;
