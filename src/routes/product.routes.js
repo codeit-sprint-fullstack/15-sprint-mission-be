@@ -1,6 +1,8 @@
 import express from "express";
+import mongoose from "mongoose";
 import { z } from "zod";
 import { validate } from "../middlewares/validate.middleware.js";
+import { AppError } from "../utils/AppError.js";
 import * as productController from "../controllers/product.controller.js";
 
 const router = express.Router();
@@ -29,6 +31,14 @@ const querySchema = z.object({
   page: z.coerce.number().min(1).default(1),
   limit: z.coerce.number().min(1).max(100).default(10),
   keyword: z.string().default(""),
+});
+
+// 상품 id 체크
+router.param("id", (req, res, next, id) => {
+  if (!mongoose.isValidObjectId(id)) {
+    return next(new AppError("유효하지 않은 상품 ID입니다", 400));
+  }
+  next();
 });
 
 // 상품 등록

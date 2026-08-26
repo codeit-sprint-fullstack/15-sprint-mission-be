@@ -1,13 +1,5 @@
-import mongoose from "mongoose";
-
 import { Product } from "../models/product.model.js";
 import { AppError } from "../utils/AppError.js";
-
-const checkValidId = (id) => {
-  if (!mongoose.isValidObjectId(id)) {
-    throw new AppError("유효하지 않은 상품 ID입니다", 400);
-  }
-};
 
 export const createProduct = async (req, res) => {
   const { name, description, price, tags } = res.locals.validated.body;
@@ -23,7 +15,6 @@ export const createProduct = async (req, res) => {
 
 export const getProduct = async (req, res) => {
   const { id } = req.params;
-  checkValidId(id);
 
   const product = await Product.findById(id);
   if (!product) {
@@ -39,7 +30,6 @@ export const getProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
-  checkValidId(id);
 
   const validatedBody = res.locals.validated.body;
 
@@ -64,7 +54,6 @@ export const updateProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
   const { id } = req.params;
-  checkValidId(id);
 
   const product = await Product.findById(id);
   if (!product) {
