@@ -1,5 +1,11 @@
 import { AppError } from "../utils/AppError.js";
 
+/**
+ * Zod 스키마를 이용한 요청 데이터 검증 미들웨어
+ * @param {import('zod').ZodSchema} schema - 검증에 사용할 Zod 스키마
+ * @param {"body" | "query" | "params"} [target="body"] - 검증할 객체의 위치 (기본값: "body")
+ * @returns {Function} Express 미들웨어 함수
+ */
 export const validate =
   (schema, target = "body") =>
   (req, res, next) => {
