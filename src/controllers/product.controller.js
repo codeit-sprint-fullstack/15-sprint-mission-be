@@ -74,9 +74,10 @@ export const getProducts = async (req, res) => {
 
   const query = {};
   if (keyword) {
+    const escapeKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     query.$or = [
-      { name: { $regex: keyword, $options: "i" } },
-      { description: { $regex: keyword, $options: "i" } },
+      { name: { $regex: escapeKeyword, $options: "i" } },
+      { description: { $regex: escapeKeyword, $options: "i" } },
     ];
   }
 
