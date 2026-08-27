@@ -2,14 +2,12 @@ import express from 'express';
 import { router } from './routes/index.js';
 import { logger } from './middlewares/logger.js';
 import { config } from './config/config.js';
-import { connectDB } from './db/index.js';
 import { errorHandler } from './middlewares/error-handler.js';
 import cors from 'cors';
 //import { isDevelopment, isProduction } from './config/config.js';
 
 const app = express();
-
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+const allowedOrigins = 'http://localhost:5173'
   .split(',')
   .map((origin) => origin.trim());
 
@@ -31,12 +29,13 @@ app.use(
   }),
 );
 
-await connectDB();
 app.use(express.json());
 app.use(logger);
 app.use('/', router);
 app.use(errorHandler);
 
 app.listen(config.PORT, () => {
-  console.log('Sprint mission 5 Server running');
+  console.log(
+    `[${config.NODE_ENV}] Server running at http://localhost:${config.PORT}`,
+  );
 });

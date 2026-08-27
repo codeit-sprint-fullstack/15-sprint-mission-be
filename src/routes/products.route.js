@@ -1,7 +1,8 @@
 import express from 'express';
 import { Product } from '../models/product.model.js';
 import { NotFoundException } from '../errors/not-found-exception.js';
-import { validateProduct } from '../middlewares/validate-user.js';
+import { validateProduct } from '../middlewares/validate-product.js';
+import { productsRepository } from '#repositories';
 
 export const productsRouter = express.Router();
 
@@ -10,51 +11,25 @@ productsRouter.get('/', async (req, res, next) => {
     const { keyword, sort } = req.query;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
-    const sortOption = sort === 'oldest' ? { createdAt: 1 } : { createdAt: -1 };
-
-    let filter = {};
-
-    if (keyword) {
-      const orConditions = [
-        { name: { $regex: keyword, $options: 'i' } },
-        { description: { $regex: keyword, $options: 'i' } },
-        { tags: { $regex: keyword, $options: 'i' } },
-      ];
-
-      if (!isNaN(Number(keyword))) {
-        orConditions.push({ price: Number(keyword) });
-      }
-
-      const parsedDate = new Date(keyword);
-      if (!isNaN(parsedDate.getTime())) {
-        const startOfDay = new Date(parsedDate.setHours(0, 0, 0, 0));
-        const endOfDay = new Date(parsedDate.setHours(23, 59, 59, 999));
-        orConditions.push({ createdAt: { $gte: startOfDay, $lte: endOfDay } });
-      }
-
-      filter = { $or: orConditions };
+    let sortMap = 'desc';
+    if(sort === null || sort === 'recent') {
+      sortMap = 'desc';
+    }
+    else {
+      sortMap = sort;
     }
 
-    const products = await Product.find(filter)
-      .sort(sortOption)
-      .skip(skip)
-      .limit(limit);
-
-    const totalCount = await Product.countDocuments(filter);
-
-    if(!products.length) {
-      throw new NotFoundException('제품을 찾을수 없음');
-    }
-
+    const [products, totalCount] = await Promise.all([
+      productsRepository.find(page, limit, sortMap, keyword),
+      productsRepository.count(keyword),
+    ]);
     res.status(200).json({
       success: true,
       data: products,
       currentPage: page,
       totalPages: Math.ceil(totalCount / limit),
       totalCount,
-      message: '제품 목록 불러오기 완료',
+      message: '제품목록 불러오기 완료',
     });
   } catch (error) {
     next(error);

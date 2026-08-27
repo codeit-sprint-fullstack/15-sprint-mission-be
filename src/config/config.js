@@ -3,7 +3,12 @@ import { z } from 'zod';
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']),
   PORT: z.coerce.number().min(1000).max(65535),
-  MONGO_URI: z.string(),
+  DATABASE_URL: z
+        .url()
+        .refine(
+          (url) => url.startsWith('postgresql:') || url.startsWith('postgres:'),
+          'PostgreSQL 연결 URL이어야 합니다.',
+        ),
 });
 
 const parseEnvironment = () => {
@@ -11,7 +16,7 @@ const parseEnvironment = () => {
     return envSchema.parse({
       NODE_ENV: process.env.NODE_ENV,
       PORT: process.env.PORT,
-      MONGO_URI: process.env.MONGO_URI,
+      DATABASE_URL: process.env.DATABASE_URL,
     });
   } catch (error) {
     console.log('error', error);
