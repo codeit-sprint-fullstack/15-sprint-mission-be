@@ -1,0 +1,46 @@
+generator client {
+    provider = "prisma-client"
+    output   = "../generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+model Product {
+    id          Int      @id @default(autoincrement())
+    name        String
+    description String
+    price       Int
+    tags        String[]
+    img         String
+    comment   ProductComment[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
+
+model Article {
+    id        Int       @id @default(autoincrement())
+    title     String?   @default("제목 없음")
+    content   String?   @default("내용 없음")
+    comment   ArticleComment[]
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+}
+
+model ProductComment {
+    id        Int      @id @default(autoincrement())
+    content   String
+    authorId  Int
+    author    Product  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+model ArticleComment {
+    id        Int      @id @default(autoincrement())
+    content   String
+    authorId  Int
+    author    Article  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
