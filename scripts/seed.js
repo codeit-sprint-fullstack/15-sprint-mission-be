@@ -3,8 +3,8 @@ import { PrismaClient } from '#generated/prisma/client.ts';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { assertSafeSeedTarget, resetMarketData } from './seed-safety.js';
 
-const NUM_PRODUCT_TO_CREATE = 15;
-const NUM_ARTICLE_TO_CREATE = 15;
+const NUM_PRODUCT_TO_CREATE = 30;
+const NUM_ARTICLE_TO_CREATE = 30;
 
 const makeProductInput = () => ({
   name: faker.lorem.sentence({ min: 3, max: 8 }),
@@ -35,24 +35,37 @@ async function seed(prisma) {
   await prisma.product.createMany({ data: productData });
   await prisma.article.createMany({ data: articleData });
 
+  const products = await prisma.product.findMany({
+    select: { id: true },
+  });
   const articles = await prisma.article.findMany({
     select: { id: true },
   });
 
-  const commentData = [];
-  for (const article of articles) {
+  const productCommentData = [];
+  for (const product of products) {
     const count = faker.number.int({ min: 1, max: 3 });
     for (let index = 0; index < count; index += 1) {
-      commentData.push(makeCommentInput(article.id));
+      productCommentData.push(makeCommentInput(product.id));
     }
   }
 
-  await prisma.comment.createMany({ data: commentData });
+  const articleCommentData = [];
+  for (const article of articles) {
+    const count = faker.number.int({ min: 1, max: 3 });
+    for (let index = 0; index < count; index += 1) {
+      articleCommentData.push(makeCommentInput(article.id));
+    }
+  }
+
+  await prisma.productComment.createMany({ data: productCommentData });
+  await prisma.articleComment.createMany({ data: articleCommentData });
 
   return {
     productCount: productData.length,
     articleCount: articleData.length,
-    commentCount: commentData.length,
+    productCommentCount: productCommentData.length,
+    articleCommentCount: articleCommentData.length,
   };
 }
 
@@ -68,7 +81,8 @@ async function main(prisma) {
 
   console.log(`${result.productCount}개의 제품이 생성되었습니다.`);
   console.log(`${result.articleCount}개의 게시글이 생성되었습니다.`);
-  console.log(`${result.commentCount}개의 댓글이 생성되었습니다.`);
+  console.log(`${result.productCommentCount}개의 제품 댓글이 생성되었습니다.`);
+  console.log(`${result.articleCommentCount}개의 게시글 댓글이 생성되었습니다.`);
 }
 
 const adapter = new PrismaPg({

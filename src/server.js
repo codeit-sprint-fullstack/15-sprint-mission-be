@@ -7,7 +7,7 @@ import cors from 'cors';
 //import { isDevelopment, isProduction } from './config/config.js';
 
 const app = express();
-const allowedOrigins = 'http://localhost:5173'
+const allowedOrigins = process.env.ALLOWED_ORIGINS
   .split(',')
   .map((origin) => origin.trim());
 

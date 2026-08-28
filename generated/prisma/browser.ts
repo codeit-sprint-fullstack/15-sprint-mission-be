@@ -28,7 +28,12 @@ export type Product = Prisma.ProductModel
  */
 export type Article = Prisma.ArticleModel
 /**
- * Model Comment
+ * Model ProductComment
  * 
  */
-export type Comment = Prisma.CommentModel
+export type ProductComment = Prisma.ProductCommentModel
+/**
+ * Model ArticleComment
+ * 
+ */
+export type ArticleComment = Prisma.ArticleCommentModel

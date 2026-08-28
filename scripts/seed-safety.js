@@ -39,6 +39,7 @@ export function resetMarketData(prisma) {
   return prisma.$transaction([
     prisma.product.deleteMany(),
     prisma.article.deleteMany(),
-    prisma.comment.deleteMany(),
+    prisma.productComment.deleteMany(),
+    prisma.articleComment.deleteMany(),
   ]);
 }

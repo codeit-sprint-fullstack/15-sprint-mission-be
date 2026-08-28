@@ -1,5 +1,4 @@
 import express from 'express';
-import { Product } from '../models/product.model.js';
 import { NotFoundException } from '../errors/not-found-exception.js';
 import { validateProduct } from '../middlewares/validate-product.js';
 import { productsRepository } from '#repositories';
@@ -12,10 +11,9 @@ productsRouter.get('/', async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     let sortMap = 'desc';
-    if(sort === null || sort === 'recent') {
+    if (sort === null || sort === 'recent') {
       sortMap = 'desc';
-    }
-    else {
+    } else {
       sortMap = sort;
     }
 
@@ -38,7 +36,7 @@ productsRouter.get('/', async (req, res, next) => {
 
 productsRouter.get('/:productId', async (req, res, next) => {
   try {
-    const product = await Product.findById(req.params.productId);
+    const product = await productsRepository.findById(req.params.productId);
     if (!product) {
       throw new NotFoundException('제품을 찾을수 없음');
     }
@@ -57,13 +55,13 @@ productsRouter.post('/', validateProduct, async (req, res, next) => {
   try {
     const { name, description, price, tags, img } = req.body ?? {};
 
-    const newProduct = new Product({ name, description, price, tags, img });
-
-    await newProduct.save();
+    const newProduct = { name, description, price: Number(price), tags, img };
+    console.log('생성데이터:',newProduct);
+    const result = await productsRepository.createProduct(newProduct);
 
     res.status(201).json({
       success: true,
-      data: newProduct,
+      data: result,
       message: '제품 생성 완료',
     });
   } catch (error) {
@@ -75,7 +73,7 @@ productsRouter.patch('/:productId', validateProduct, async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const { name, description, price, tags, img } = req.body ?? {};
-    const target = Product.findOne({ _id: productId });
+    const target = productsRepository.findById(productId);
     if (!target) {
       throw new NotFoundException('제품을 찾을 수 없음');
     }
@@ -97,10 +95,7 @@ productsRouter.patch('/:productId', validateProduct, async (req, res, next) => {
       update.img = img;
     }
 
-    const udpatedProduct = await Product.findByIdAndUpdate(productId, update, {
-      returnDocument: 'after',
-      runValidators: true,
-    });
+    const udpatedProduct = await productsRepository.update(productId, update);
 
     res.status(200).json({
       success: true,
@@ -115,12 +110,12 @@ productsRouter.patch('/:productId', validateProduct, async (req, res, next) => {
 productsRouter.delete('/:productId', async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const target = Product.findOne({ _id: productId });
+    const target = productsRepository.findById(productId);
     if (!target) {
       throw new NotFoundException('제품을 찾을 수 없음');
     }
 
-    const deleteTarget = await Product.findByIdAndDelete(productId);
+    const deleteTarget = await productsRepository.remove(productId);
 
     res.status(200).json({
       success: true,

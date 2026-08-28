@@ -1,6 +1,6 @@
 import { prisma } from '#db/prisma.js';
 
-function create(data) {
+function createProduct(data) {
   return prisma.product.create({ data });
 }
 
@@ -58,7 +58,7 @@ function remove(productId) {
 }
 
 export const productsRepository = {
-  create,
+  createProduct,
   findById,
   find,
   count,

@@ -216,7 +216,7 @@ export type ArticleWhereInput = {
   content?: Prisma.StringNullableFilter<"Article"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Article"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Article"> | Date | string
-  comment?: Prisma.CommentListRelationFilter
+  comment?: Prisma.ArticleCommentListRelationFilter
 }
 
 export type ArticleOrderByWithRelationInput = {
@@ -225,7 +225,7 @@ export type ArticleOrderByWithRelationInput = {
   content?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  comment?: Prisma.CommentOrderByRelationAggregateInput
+  comment?: Prisma.ArticleCommentOrderByRelationAggregateInput
 }
 
 export type ArticleWhereUniqueInput = Prisma.AtLeast<{
@@ -237,7 +237,7 @@ export type ArticleWhereUniqueInput = Prisma.AtLeast<{
   content?: Prisma.StringNullableFilter<"Article"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Article"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Article"> | Date | string
-  comment?: Prisma.CommentListRelationFilter
+  comment?: Prisma.ArticleCommentListRelationFilter
 }, "id">
 
 export type ArticleOrderByWithAggregationInput = {
@@ -269,7 +269,7 @@ export type ArticleCreateInput = {
   content?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  comment?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  comment?: Prisma.ArticleCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type ArticleUncheckedCreateInput = {
@@ -278,7 +278,7 @@ export type ArticleUncheckedCreateInput = {
   content?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  comment?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  comment?: Prisma.ArticleCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type ArticleUpdateInput = {
@@ -286,7 +286,7 @@ export type ArticleUpdateInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  comment?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  comment?: Prisma.ArticleCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type ArticleUncheckedUpdateInput = {
@@ -295,7 +295,7 @@ export type ArticleUncheckedUpdateInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  comment?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  comment?: Prisma.ArticleCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type ArticleCreateManyInput = {
@@ -449,7 +449,7 @@ export type ArticleCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
  * ArticleCountOutputType without action
  */
 export type ArticleCountOutputTypeCountCommentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CommentWhereInput
+  where?: Prisma.ArticleCommentWhereInput
 }
 
 
@@ -498,7 +498,7 @@ export type ArticleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type $ArticlePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Article"
   objects: {
-    comment: Prisma.$CommentPayload<ExtArgs>[]
+    comment: Prisma.$ArticleCommentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -900,7 +900,7 @@ readonly fields: ArticleFieldRefs;
  */
 export interface Prisma__ArticleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  comment<T extends Prisma.Article$commentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Article$commentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  comment<T extends Prisma.Article$commentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Article$commentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticleCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1332,23 +1332,23 @@ export type ArticleDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
  */
 export type Article$commentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Comment
+   * Select specific fields to fetch from the ArticleComment
    */
-  select?: Prisma.CommentSelect<ExtArgs> | null
+  select?: Prisma.ArticleCommentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Comment
+   * Omit specific fields from the ArticleComment
    */
-  omit?: Prisma.CommentOmit<ExtArgs> | null
+  omit?: Prisma.ArticleCommentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.CommentInclude<ExtArgs> | null
-  where?: Prisma.CommentWhereInput
-  orderBy?: Prisma.CommentOrderByWithRelationInput | Prisma.CommentOrderByWithRelationInput[]
-  cursor?: Prisma.CommentWhereUniqueInput
+  include?: Prisma.ArticleCommentInclude<ExtArgs> | null
+  where?: Prisma.ArticleCommentWhereInput
+  orderBy?: Prisma.ArticleCommentOrderByWithRelationInput | Prisma.ArticleCommentOrderByWithRelationInput[]
+  cursor?: Prisma.ArticleCommentWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+  distinct?: Prisma.ArticleCommentScalarFieldEnum | Prisma.ArticleCommentScalarFieldEnum[]
 }
 
 /**
