@@ -20,7 +20,8 @@ function find(page, limit, sort, keyword) {
       : {},
     skip: (pageNum - 1) * limitNum,
     take: limitNum,
-    orderBy: { createdAt: validSort },
+    orderBy: [ { createdAt: validSort },
+    { id: 'asc' },]
   });
 }
 
