@@ -1,4 +1,4 @@
-import { BadRequestException } from '#scr/error/bad-request-exception.js';
+import { BadRequestException } from '#src/error/bad-request-exception.js';
 
 export const validateProductsPagination = (req, res, next) => {
   const { page, pageSize } = req.query;
@@ -16,7 +16,7 @@ export const validateProductsPagination = (req, res, next) => {
     !Number.isInteger(pageSizeNumber) ||
     pageSizeNumber > 100;
 
-  if (isInvallidpage && isInvalidPageSize) {
+  if (isInvallidpage || isInvalidPageSize) {
     throw new BadRequestException('page는 1이상 100이하이여합니다.');
   }
 
@@ -25,7 +25,7 @@ export const validateProductsPagination = (req, res, next) => {
 
   req.validateProductsPagination = {
     page: pageNumber,
-    pageSize: pageNumber,
+    pageSize: pageSizeNumber,
     skip,
   };
 
