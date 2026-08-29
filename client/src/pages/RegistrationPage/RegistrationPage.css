@@ -144,19 +144,49 @@
 }
 
 /* 확정된 태그를 Figma의 회색 칩으로 표시 */
+/* 태그명과 X 버튼을 Figma 간격으로 배치 */
 .registration-tag-chip {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   box-sizing: border-box;
+  gap: 8px;
   height: 36px;
-  padding: 6px 16px;
+  padding: 6px 12px 6px 16px;
+  overflow: hidden;
   border-radius: 26px;
   background-color: #f3f4f6;
   color: #1f2937;
   font-size: 16px;
+  font-weight: 400;
   line-height: 26px;
   white-space: nowrap;
 }
+
+/* X 아이콘을 폼 제출과 분리된 투명 버튼으로 표시 */
+.registration-tag-remove-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  line-height: 0;
+  cursor: pointer;
+}
+
+/* Figma의 X SVG 크기를 22×24px로 고정 */
+.registration-tag-remove-icon {
+  display: block;
+  width: 22px;
+  height: 24px;
+  gap: 8px;
+}
+
+
 
 /* Tablet 화면의 좌우 여백 */
 @media (min-width: 744px) {

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { createProduct } from "../../api/productApi.js";
 import { useNavigate } from "react-router"; //코드에서 URL을이동하는 hook
 import useProductFormValidation from "../../hooks/useProductFormValidation.js";
+import xIcon from "../../assets/images/icons/ic_x.svg";
 
 // 상품 등록 화면을 담당하는 페이지 컴포넌트
 function RegistrationPage() {
@@ -18,15 +19,25 @@ function RegistrationPage() {
 
   const [tags, setTags] = useState([]); //Enter로 입력이 완료된 태그들을 배열로 저장
 
-  const { nameError, descriptionError } = useProductFormValidation({
-    name,
-    description,
-  }); //현재 상품명이 유효한지 검사
+  const { nameError, descriptionError, priceError, tagError } =
+    useProductFormValidation({
+      name,
+      description,
+      price,
+      tags,
+      tagInput
+    }); //현재 상품명이 유효한지 검사
 
   const [isNameTouched, setIsNameTouched] = useState(false); //상품명 입력을 마쳤는지 저장
 
-  const [hasDescriptionChanged, setHasDescriptionChanged] = useState(false);
-  const [isDescriptionTouched, setIsDescriptionTouched] = useState(false);
+  const [hasDescriptionChanged, setHasDescriptionChanged] = useState(false); //상품소개 입력했는지 글자수유효성 검사
+  const [isDescriptionTouched, setIsDescriptionTouched] = useState(false); //상품소개 입력했는지 내용비어있으면true
+
+  const [hasPriceChanged, setHasPriceChanged] = useState(false); //판매 가격이 변경됐는지 저장
+  const [isPriceTouched, setIsPriceTouched] = useState(false); // 판매 가격 입력창에서 포커스가 빠졌는지저장
+
+  const [hasTagChanged, setHasTagChaged] = useState(false) //태그 입력값이 변경됐는지 저장
+  const [isTagTouched, setIsTagTouched] = useState(false) //태그 입력창에서 포커스가 빠졌는지 저장
 
   const shouldShowNameError =
     Boolean(nameError) && (isNameTouched || name.trim().length > 10); //입력을 마쳤거나 상품명이 10자를 넘으면 오류를 바로 표시
@@ -36,33 +47,58 @@ function RegistrationPage() {
     (hasDescriptionChanged || isDescriptionTouched) &&
     Boolean(descriptionError);
 
+  //판매가격 : 가격을 입력했거나 입력창을 벗어난 뒤 오류가 있으면 표시
+  const shouldShowPriceError =
+    (hasPriceChanged || isPriceTouched) && Boolean(priceError);
+
+  //태그 : 태그를 입력했거나 입력창을 벗어난 뒤 오류가 있으면 표시;
+  const shouldShowTagError =
+    (hasTagChanged || isTagTouched) && Boolean(tagError);
+
   //등록버튼 조건 : 첫입력 이후 유효하지 않으면 최소최대 글자 수 오류를 즉시표시
   const isFormComplete =
     nameError === "" &&
     descriptionError === "" &&
-    price.trim() !== "" &&
+    priceError === "" &&
+    tagError === "" &&
     tags.length > 0;
 
-  //Enter를 누르면 입력 중인 태그를 배열에 추가
-  const handleTagKeyDown = (event) => {
-    //한글 조합 중이거나 Enter가 아니면 실행X
-    if (event.nativeEvent.isComposing || event.key !== "Enter") {
-      return;
-    }
+// Enter를 누르면 유효한 태그만 배열에 추가
+const handleTagKeyDown = (event) => {
+  // 한글 조합 중이거나 Enter가 아니면 실행하지 않음
+  if (event.nativeEvent.isComposing || event.key !== "Enter") {
+    return;
+  }
 
-    event.preventDefault(); //Enter로 폼 전체가 제출되는 것을 방지
+  // Enter로 폼 전체가 제출되는 것을 방지
+  event.preventDefault();
 
-    const newTag = tagInput.trim(); //태그 앞 뒤의 불필요한 공백을 제거
+  // 태그 앞뒤의 불필요한 공백을 제거
+  const newTag = tagInput.trim();
 
-    if (!newTag) {
-      //빈 문자열은 태그로 추가하지 않음
-      return;
-    }
+  // 빈 문자열은 태그로 추가하지 않음
+  if (!newTag) {
+    return;
+  }
 
-    setTags([...tags, newTag]); //기존 태그 뒤에 새로운 태그를 추가
+  // 5글자를 초과한 태그는 칩으로 추가하지 않음
+  if (newTag.length > 5) {
+    return;
+  }
 
-    setTagInput(""); //추가가 끝나면 태그 입력창을 비움
-  };
+  // 유효한 태그를 기존 배열 뒤에 추가
+  setTags([...tags, newTag]);
+
+  // 추가가 끝나면 태그 입력창을 비움
+  setTagInput("");
+};
+
+  //클릭한 순서의 태그만 배열에서 제거
+  const handleRemoveTag = (targetIndex) => {
+    setTags((currentTags)=>
+      currentTags.filter((_, index)=> index !== targetIndex),
+    )
+  }
 
   //등록버튼을 눌렀을 떄 폼 제출을 REACT에서 처리
   const handleSubmit = async (event) => {
@@ -186,16 +222,32 @@ function RegistrationPage() {
             <label className="registration-field-label" htmlFor="product-price">
               판매가격
             </label>
-            <input
-              className="registration-field-input"
-              id="product-price"
-              name="price"
-              type="text"
-              inputMode="numeric"
-              value={price}
-              onChange={(event) => setPrice(event.target.value)}
-              placeholder="판매 가격을 입력해주세요"
-            />
+            <div className="registration-input-group">
+              <input
+                className={`registration-field-input ${
+                  shouldShowPriceError ? "registration-field-input-error" : ""
+                }`}
+                id="product-price"
+                name="price"
+                type="text"
+                inputMode="numeric"
+                value={price}
+                onChange={(event) => {
+                  setPrice(event.target.value);
+                  setHasPriceChanged(true);
+                }}
+                /* 가격 입력창을 벗어났음을 저장 */
+                onBlur={() => setIsPriceTouched(true)}
+                placeholder="판매 가격을 입력해주세요"
+              />
+
+              {/* 판매 가격 오류가 있을 때만 메시지를 표시 */}
+              {shouldShowPriceError ? (
+                <p className="registration-field-error-message">{priceError}</p>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
 
           {/* 상품을 분류할 태그를 입력받는 항목 */}
@@ -205,29 +257,56 @@ function RegistrationPage() {
             </label>
 
             {/* 저장된 태그가 있을 떄만 칩 목록을 표시 */}
+            {/* 태그 입력창과 오류 메시지를 8px 간격으로 배치 */}
             <div className="registration-tag-input-area">
-              <input
-                className="registration-field-input"
-                id="product-tag"
-                name="tag"
-                type="text"
-                value={tagInput}
-                onChange={(event) => setTagInput(event.target.value)}
-                onKeyDown={handleTagKeyDown}
-                placeholder="태그를 입력해주세요"
-              />
+              <div className="registration-input-group">
+                <input
+                  className={`registration-field-input ${
+                    shouldShowTagError
+                      ? "registration-field-input-error"
+                      : ""
+                  }`}
+                  id="product-tag"
+                  name="tag"
+                  type="text"
+                  value={tagInput}
+                  // 입력하는 순간부터 태그 글자 수를 검사
+                  onChange={(event)=>{
+                    setTagInput(event.target.value);
+                    setHasTagChaged(true)
+                  }}
+                  onKeyDown={handleTagKeyDown}
+                  //빈 상태로 입력창을 벗어나도 오류를 표시
+                  onBlur={()=>setIsTagTouched(true)}
+                  placeholder="태그를 입력해주세요"
+                  />
 
+                  {/* 태그 오류가 있을때만 메시지 표시 */}
+                  {shouldShowTagError? (
+                    <p className="registration-field-error-message">{tagError}</p>
+                  ) : ""}
+              </div>
               {/* 저장된 태그가 있을 때만 칩 목록을 표시 */}
               {tags.length > 0 && (
                 <div className="registration-tag-list">
                   {/* tags 배열의 각 값을 태그 칩으로 변환 */}
                   {tags.map((tag, index) => (
-                    <span
-                      className="registration-tag-chip"
-                      key={`${tag}=${index}`}
-                    >
-                      #{tag}
-                    </span>
+                    <div className="registration-tag-chip" key={`${tag}-${index}`}>
+                      <span>#{tag}</span>
+
+                    {/* type="button"으로 설정해 폼 제출을 방지 */}
+                    <button
+                      className="registration-tag-remove-button"
+                      type="button"
+                      onClick={()=>handleRemoveTag(index)}
+                      aria-label={`${tag} 태그 삭제`}>
+
+                      <img
+                        className="registration-tag-remove-icon"
+                        src={xIcon}
+                        alt="" />
+                    </button>
+                    </div>
                   ))}
                 </div>
               )}
