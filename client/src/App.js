@@ -4,6 +4,7 @@ import Footer from "./components/Layout/Footer";
 import { Route, Routes } from "react-router";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import ResistrationPage from "./pages/RegistrationPage/RegistrationPage";
+import ProductDetailPage from "./pages/ProductDetailPage/ProductDetailPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/items" element={<MarketPage />} />
           <Route path="/registration" element={<ResistrationPage />} />
+          <Route path="/items/:id" element={<ProductDetailPage/>} />
         </Routes>
       </div>
       <Footer />
