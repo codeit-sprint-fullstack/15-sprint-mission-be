@@ -1,7 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { PrismaClient } from '#generated/prisma/client.ts';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { assertSafeSeedTarget, resetPandaMarketData } from './seed-safety.js';
+import {
+  assertSafeSeedInsertTarget,
+  assertSafeSeedTarget,
+  resetPandaMarketData,
+} from './seed-safety.js';
 
 const NUM_PRODUCTS_TO_CREATE = 10;
 const NUM_ARTICLES_TO_CREATE = 10;
@@ -67,13 +71,31 @@ async function seed(prisma) {
 }
 
 async function main(prisma) {
-  assertSafeSeedTarget({
-    databaseUrl: process.env.DATABASE_URL,
-    nodeEnv: process.env.NODE_ENV,
-    args: process.argv,
-  });
+  const isInsertOnly = process.argv.includes('--no-reset');
 
-  await resetPandaMarketData(prisma);
+  if (!isInsertOnly) {
+    assertSafeSeedTarget({
+      databaseUrl: process.env.DATABASE_URL,
+      nodeEnv: process.env.NODE_ENV,
+      args: process.argv,
+    });
+
+    await resetPandaMarketData(prisma);
+  } else {
+    assertSafeSeedInsertTarget({ databaseUrl: process.env.DATABASE_URL });
+
+    const [productCount, articleCount, commentCount] = await Promise.all([
+      prisma.product.count(),
+      prisma.article.count(),
+      prisma.comment.count(),
+    ]);
+
+    if (productCount > 0 || articleCount > 0 || commentCount > 0) {
+      console.log('이미 시드된 데이터가 있어 건너뜁니다.');
+      return;
+    }
+  }
+
   const result = await seed(prisma);
 
   console.log(`${result.productCount}개의 상품이 생성되었습니다.`);

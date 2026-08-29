@@ -27,6 +27,23 @@ export function assertSafeSeedTarget({ databaseUrl, nodeEnv, args }) {
   return true;
 }
 
+export function assertSafeSeedInsertTarget({ databaseUrl }) {
+  let target;
+  try {
+    target = new URL(databaseUrl);
+  } catch {
+    throw new Error('DATABASE_URL must be a valid URL');
+  }
+
+  const isPostgres = ['postgresql:', 'postgres:'].includes(target.protocol);
+
+  if (!isPostgres) {
+    throw new Error('Non-destructive seeding requires PostgreSQL');
+  }
+
+  return true;
+}
+
 export function resetPandaMarketData(prisma) {
   return prisma.$transaction([
     prisma.comment.deleteMany(),
