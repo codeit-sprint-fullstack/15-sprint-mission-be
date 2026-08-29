@@ -1,6 +1,9 @@
 import Header from "./components/Layout/Header";
 import MarketPage from "./pages/MarketPage/MarketPage";
 import Footer from "./components/Layout/Footer";
+import { Route, Routes } from "react-router";
+import LandingPage from "./pages/LandingPage/LandingPage";
+import ResistrationPage from "./pages/RegistrationPage/RegistrationPage";
 
 function App() {
   return (
@@ -8,7 +11,12 @@ function App() {
       <Header />
 
       <div className="with-header">
-        <MarketPage />
+        {/* 현재 URL과 일치하는 페이지 컴포넌트만 렌더링 한다. */}
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/items" element={<MarketPage />} />
+          <Route path="/registration" element={<ResistrationPage />} />
+        </Routes>
       </div>
       <Footer />
     </>

@@ -1,17 +1,19 @@
 import logo from "../../assets/images/logo/logo.svg";
 import "./Header.css";
+import { Link, NavLink } from "react-router";
+
 
 function Header() {
   return (
     <header className="global-header">
       <div className="header-left">
-        <a href="/" className="header-logo-link">
+        <Link to="/" className="header-logo-link">
           <img
             src={logo}
             alt="판다마켓 홈"
             className="header-logo"
           />
-        </a>
+        </Link>
 
         <nav aria-label="주요 메뉴">
           <ul className="header-nav-list">
@@ -21,9 +23,16 @@ function Header() {
               </a>
             </li>
             <li>
-              <a href="/" className="header-nav-link">
+              <NavLink
+                to="/items"
+                className={({isActive}) =>
+                isActive
+                  ? "header-nav-link header-nav-link-active"
+                  : "header-nav-link"
+                }
+              >
                 중고마켓
-              </a>
+              </NavLink>
             </li>
           </ul>
         </nav>

@@ -47,6 +47,10 @@
   color: #3692ff;
 }
 
+.header-nav-link-active {
+  color: #3692ff;
+}
+
 .login-button {
   padding: 12px 23px;
   color: #ffffff;

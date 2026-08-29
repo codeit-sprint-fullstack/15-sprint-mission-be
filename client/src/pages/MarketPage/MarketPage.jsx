@@ -6,6 +6,8 @@ import "./MarketPage.css";
 import { useEffect, useState } from "react";
 import searchIcon from "../../assets/images/icons/ic_search.svg";
 import sortMobileIcon from "../../assets/images/icons/ic_sort_mobile.svg";
+import { Link } from "react-router";
+
 
 //임시연결
 const BEST_PAGE_SIZE = {
@@ -171,12 +173,12 @@ function MarketPage() {
             />
           </form>
 
-          <button
-            type="button"
+          <Link
             className="product-register-button"
+            to="/registration"
           >
             상품 등록하기
-          </button>
+          </Link>
 
           <div className="market-sort-control">
             <img

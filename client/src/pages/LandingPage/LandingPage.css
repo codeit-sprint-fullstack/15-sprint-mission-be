@@ -1,0 +1,149 @@
+.landing-page {
+  width: 100%;
+}
+
+.landing-hero {
+  width: 100%;
+  background-color: #cfe5ff;
+}
+
+.landing-hero-content {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1110px;
+  height: 540px;
+  margin: 0 auto;
+  gap: 7px;
+}
+
+.landing-hero-text {
+  flex: 0 0 357px;
+  margin-bottom: 40px;
+}
+
+.landing-hero-title {
+  margin: 0;
+  color: #374151;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.landing-hero-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 357px;
+  height: 56px;
+  margin-top: 32px;
+  color: #f9fafb;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 32px;
+  text-decoration: none;
+  background-color: #3692ff;
+  border-radius: 40px;
+}
+
+.landing-hero-image {
+  flex: 0 0 746px;
+  width: 746px;
+  height: 340px;
+  object-fit: contain;
+}
+
+.landing-feature {
+  width: 100%;
+  padding: 138px 24px;
+  background-color: #ffffff;
+}
+
+.landing-feature-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1110px;
+  margin: 0 auto;
+}
+
+.landing-feature-image {
+  flex: 0 0 588px;
+  width: 588px;
+  height: 444px;
+  object-fit: contain;
+}
+
+.landing-feature-text {
+  margin-left: 64px;
+}
+
+.landing-feature-label {
+  margin: 0 0 12px;
+  color: #3692ff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+}
+
+.landing-feature-title {
+  margin: 0 0 24px;
+  color: #374151;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.landing-feature-description {
+  margin: 0;
+  color: #374151;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
+}
+
+.landing-feature-reverse .landing-feature-content {
+  justify-content: center;
+}
+
+.landing-feature-reverse .landing-feature-text {
+  margin-right: 64px;
+  margin-left: 0;
+}
+
+
+/* bottom */
+
+.landing-bottom-banner {
+  width: 100%;
+  background-color: #cfe5ff;
+}
+
+.landing-bottom-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1110px;
+  height: 540px;
+  padding-top: 143px;
+  margin: 0 auto;
+}
+
+.landing-bottom-title {
+  margin: 0;
+  color: #374151;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.landing-bottom-image {
+  align-self: flex-end;
+  flex: 0 0 746px;
+  width: 746px;
+  height: 397px;
+  object-fit: contain;
+}
