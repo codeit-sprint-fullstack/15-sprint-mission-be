@@ -9,12 +9,12 @@ import sortMobileIcon from "../../assets/images/icons/ic_sort_mobile.svg";
 import { Link } from "react-router";
 
 
-//임시연결
-const BEST_PAGE_SIZE = {
-  mobile: 1,
-  tablet: 2,
-  desktop: 4,
-};
+// //임시연결
+// const BEST_PAGE_SIZE = {
+//   mobile: 1,
+//   tablet: 2,
+//   desktop: 4,
+// };
 
 const ALL_PAGE_SIZE = {
   mobile: 4,
@@ -73,15 +73,15 @@ function MarketPage() {
   }, [allProductsPageSize, orderBy, keyword]);
 
   // 베스트 상품 요청
-  const {
-    products: bestProducts,
-    isLoading: isBestLoading,
-    error: bestError,
-  } = useProducts({
-    page: 1,
-    pageSize: BEST_PAGE_SIZE[deviceType],
-    orderBy: "favorite",
-  });
+  // const {
+  //   products: bestProducts,
+  //   isLoading: isBestLoading,
+  //   error: bestError,
+  // } = useProducts({
+  //   page: 1,
+  //   pageSize: BEST_PAGE_SIZE[deviceType],
+  //   orderBy: "favorite",
+  // });
 
   // 판매 중인 상품 요청
   const {
@@ -125,31 +125,6 @@ function MarketPage() {
 
   return (
     <main className="market-page">
-      <section className="market-section">
-        <h1 className="market-section-title">베스트 상품</h1>
-
-        {/* <div className="best-items-grid">
-          {mockItems.map((item) => (
-            <ItemCard key={`best-${item.id}`} item={item} />
-          ))}
-        </div> */}
-
-        {isBestLoading ? (
-          <p className="market-status">
-            상품을 불러오는 중입니다.
-          </p>
-        ) : bestError ? (
-          <p className="market-status market-status-error">
-            상품을 불러오지 못했습니다.
-          </p>
-        ) : (
-          <div className="best-items-grid">
-            {bestProducts.map((item) => (
-              <ItemCard key={`best-${item.id}`} item={item} />
-            ))}
-          </div>
-        )}
-      </section>
 
       <section className="market-section">
         <div className="market-section-header">
@@ -196,7 +171,7 @@ function MarketPage() {
               }
             >
               <option value="recent">최신순</option>
-              <option value="favorite">좋아요순</option>
+              {/* <option value="favorite">좋아요순</option> */}
             </select>
           </div>
         </div>
