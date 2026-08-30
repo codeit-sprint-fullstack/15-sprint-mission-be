@@ -23,25 +23,23 @@ React 프론트엔드와 Express 백엔드를 연동한 중고마켓 풀스택 �
 - Express 5
 - MongoDB Atlas
 - Mongoose
-- postman
 
-### Code Quality
+### Development Tools
 
 - ESLint
 - Prettier
+- Postman
 
 ## 시작하기
 
-### 1. 의존성 설치
-
-저장소를 내려받은 뒤 `server` 폴더로 이동합니다.
+### 1. 백엔드 의존성 설치
 
 ```bash
 cd server
 npm install
 ```
 
-### 2. 환경 변수 설정
+### 2. 백엔드 환경 변수 설정
 
 `server/.env` 파일을 만들고 아래 값을 입력합니다.
 
@@ -53,7 +51,7 @@ MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>/<database>
 
 `MONGODB_URI`에는 본인의 MongoDB Atlas 연결 문자열을 사용해야 합니다. `.env`는 Git에 포함되지 않습니다.
 
-### 3. 서버 실행
+### 3. 백엔드 실행
 
 ```bash
 npm run dev
@@ -66,18 +64,54 @@ MongoDB 연결 성공
 서버가 3001포트에서 작동 중입니다.
 ```
 
+### 4. 프론트엔드 의존성 설치
+
+새 터미널을 열고 저장소 루트에서 `client` 폴더로 이동합니다.
+
+```bash
+cd client
+npm install
+```
+
+### 5. 프론트엔드 환경 변수 설정
+
+`client/.env` 파일을 만들고 사용할 API 주소를 입력합니다.
+
+로컬 백엔드를 사용할 때:
+
+```env
+REACT_APP_API_BASE_URL=http://localhost:3001
+```
+
+배포된 백엔드를 사용할 때:
+
+```env
+REACT_APP_API_BASE_URL=https://one5-sprint-mission-be-okq9.onrender.com
+```
+
+### 6. 프론트엔드 실행
+
+```bash
+npm start
+```
+
+브라우저에서 `http://localhost:3000`으로 접속합니다.
+
 ## 명령어
 
-| 명령어 | 설명 |
-| --- | --- |
-| `npm run dev` | 개발 서버 실행 |
-| `npm run lint` | JavaScript 코드 검사 |
-| `npm run format` | Prettier로 파일 정리 |
-| `npm run format:check` | Prettier 적용 여부 확인 |
+| 실행 위치 | 명령어 | 설명 |
+| --- | --- | --- |
+| `client` | `npm start` | React 개발 서버 실행 |
+| `client` | `npm run build` | React 프로덕션 빌드 |
+| `server` | `npm run dev` | Express 서버 실행 |
+| `server` | `npm run lint` | JavaScript 코드 검사 |
+| `server` | `npm run format` | Prettier로 파일 정리 |
+| `server` | `npm run format:check` | Prettier 적용 여부 확인 |
 
 ## API
 
-기본 주소는 `http://localhost:3001`입니다.
+- 로컬 주소: `http://localhost:3001`
+- 배포 주소: `https://one5-sprint-mission-be-okq9.onrender.com`
 
 | 메서드 | 경로 | 설명 | 정상 상태 코드 |
 | --- | --- | --- | --- |
@@ -123,7 +157,16 @@ MongoDB 연결 성공
 ## 폴더 구조
 
 ```text
-15-sprint-mission-be/
+15-sprint-mission-be-integrated/
+├── client/
+│   ├── public/
+│   ├── src/
+│   │   ├── api/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   └── pages/
+│   └── package.json
 ├── server/
 │   ├── src/
 │   │   ├── models/
@@ -131,12 +174,26 @@ MongoDB 연결 성공
 │   │   ├── routes/
 │   │   │   └── products.js
 │   │   └── server.js
-│   ├── .env
 │   └── package.json
+├── .gitignore
 └── README.md
 ```
 
 ## 구현 현황
+
+### Frontend
+
+- [x] 랜딩 페이지 React 마이그레이션 및 `/` 라우팅
+- [x] 중고마켓 페이지와 `/items` 라우팅
+- [x] 자체 GET API를 사용한 상품 목록 조회, 검색, 최신순 정렬, 페이지네이션
+- [x] 상품 이미지가 없을 때 기본 이미지 표시
+- [x] 상품 등록 페이지와 `/registration` 라우팅
+- [x] 자체 POST API를 사용한 상품 등록 및 상세 페이지 이동
+- [x] 상품 등록 버튼 활성화 조건과 Custom Hook 유효성 검사
+- [x] 태그 칩 추가 및 삭제
+- [x] PC, Tablet, Mobile 반응형 레이아웃
+
+### Backend
 
 - [x] Express 기본 서버, 환경 변수, CORS 설정
 - [x] MongoDB Atlas 연결
