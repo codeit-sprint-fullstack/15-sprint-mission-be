@@ -12,11 +12,11 @@ Prisma + PostgreSQL로 마이그레이션하고, 자유게시판(Article)과 댓
 
 ## 배포 URL
 
-<!-- 배포가 완료되면 아래 값을 갱신합니다 -->
+```
+https://one5-sprint-mission-be-wtf6.onrender.com/api
+```
 
-```
-https://<service-name>.onrender.com/api
-```
+`GET https://one5-sprint-mission-be-wtf6.onrender.com/api` → `{"message":"Hello, Panda Market!"}`
 
 ## 로컬 실행
 
@@ -39,7 +39,8 @@ npm run seed
 
 # 비파괴: 이미 데이터가 있으면 건너뜀 (프로덕션/배포 DB에 사용)
 npm run seed:insert
-#  └─ Render Shell에서는: node ./scripts/seed.js --no-reset
+#  └─ 프로덕션 DB(External URL + sslmode=require)를 대상으로 할 때:
+#     DATABASE_URL='<External Database URL>?sslmode=require' node ./scripts/seed.js --no-reset
 ```
 
 시드 결과: 상품 10, 게시글 10, 댓글 60 (`scripts/seed.js`, faker)
@@ -98,7 +99,7 @@ npm run test:api         # 배포 URL 대상 실행
 ```
 
 - 상세 보고서: `postman/reports/api-test-report.html`
-- 브라우저에서 보기: [htmlpreview.github.io](https://htmlpreview.github.io/?https://raw.githubusercontent.com/Aidenpark87/15-sprint-mission-be/express-박순창-sprint6/sprint6/backend/postman/reports/api-test-report.html) ← 배포 후 생성됨
+- 브라우저에서 보기: [htmlpreview.github.io](https://htmlpreview.github.io/?https://raw.githubusercontent.com/Aidenpark87/15-sprint-mission-be/express-박순창-sprint6/sprint6/backend/postman/reports/api-test-report.html)
 - 요구사항 검증(`pm.test` 포함): 상태 코드, `{ success, data }` 구조, `totalCount`/`nextCursor` 필드, 필수값·404 에러 케이스
 
 ## 폴더 구조
