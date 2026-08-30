@@ -1,0 +1,16 @@
+:root {
+  --header-height: 70px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Pretendard, sans-serif;
+}
+
+.with-header {
+  padding-top: var(--header-height);
+}
