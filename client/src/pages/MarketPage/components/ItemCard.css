@@ -1,0 +1,56 @@
+.item-card {
+  min-width: 0;
+  color: #1f2937;
+}
+
+.item-card-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background-color: #f3f4f6;
+  border-radius: 16px;
+}
+
+.item-card-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.item-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.item-card-name {
+  overflow: hidden;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-card-price {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.item-card-favorite {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #4b5563;
+  font-size: 12px;
+}
+
+.item-card-heart {
+  width: 16px;
+  height: 16px;
+}
