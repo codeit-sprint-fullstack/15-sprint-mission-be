@@ -29,7 +29,10 @@
 
 .market-section-header {
   display: grid;
+
+  /* PC에서는 제목, 검색창, 등록 버튼, 정렬 메뉴를 한 줄로 배치합니다. */
   grid-template-columns: auto minmax(0, 1fr) auto auto;
+
   align-items: center;
   gap: 12px;
   margin-bottom: 24px;
@@ -48,18 +51,21 @@
 }
 
 .product-register-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 42px;
   padding: 12px 23px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 8px;
+
   background-color: #3692ff;
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .market-search-form {
@@ -247,31 +253,51 @@
 }
 
 @media (max-width: 743px) {
-  .market-section-header {
-    grid-template-columns: minimax(0, 1fr) auto;
-    grid-template-areas: "title register" "search sort";
-    gap: 12px 8px;
+  .market-page {
+    padding-top: 17px;
   }
 
-  .market-section-header .market-section-title  {
+  .market-section-header {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) 42px;
+    grid-template-areas:
+      "title title"
+      "search sort";
+
+    column-gap: 14px;
+    row-gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .market-section-header .market-section-title {
     grid-area: title;
+    display: flex;
+    align-items: center;
+    height: 42px;
   }
 
   .market-section-header .market-search-form {
     grid-area: search;
+    width: 100%;
     max-width: none;
+    height: 42px;
+    padding: 9px 16px;
     justify-self: stretch;
   }
 
   .product-register-button {
-    grid-area: register;
+    position: absolute;
+    top: 0;
+    right: 45px;
+    width: 133px;
+    height: 42px;
   }
 
   .market-sort-control {
     position: relative;
     grid-area: sort;
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
     background-color: #ffffff;

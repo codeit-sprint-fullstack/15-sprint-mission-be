@@ -1,6 +1,8 @@
 import heartIcon from "../../../assets/images/icons/ic_heart.svg";
 import "./ItemCard.css";
 import { useState } from "react";
+// 상품 이미지가 없을 때 피그마 기본 이미지를 표시합니다.
+import defaultProductImage from "../../../assets/images/default-product.svg";
 
 function ItemCard({ item }) {
   const [hasImageError, setHasImageError] = useState(false);
@@ -24,11 +26,15 @@ function ItemCard({ item }) {
           className="item-card-image"
           onError={() => setHasImageError(true)}
         />
-      ) : (
-        <div className="item-card-image item-card-image-placeholder">
-          이미지 준비중
-        </div>
-      )}
+        ) : (
+          <div className="item-card-image item-card-image-placeholder">
+            <img
+              src={defaultProductImage}
+              alt=""
+              className="item-card-default-image"
+            />
+          </div>
+        )}
 
       <div className="item-card-content">
         <h2 className="item-card-name">{item.name}</h2>

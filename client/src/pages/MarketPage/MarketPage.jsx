@@ -171,7 +171,8 @@ function MarketPage() {
               }
             >
               <option value="recent">최신순</option>
-              {/* <option value="favorite">좋아요순</option> */}
+               {/* 좋아요순은 디자인에 표시하되 실제 정렬 요청은 보내지 않음  */}
+              <option value="favorite" disabled>좋아요순</option>
             </select>
           </div>
         </div>
