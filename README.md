@@ -1,14 +1,34 @@
-# 판다마켓 API
+# 판다마켓 스프린트 미션 5
 
-스프린트 미션 5의 백엔드 프로젝트입니다. Express와 MongoDB Atlas를 사용해 상품 등록, 조회, 수정, 삭제 API를 구현했습니다.
+React 프론트엔드와 Express 백엔드를 연동한 중고마켓 풀스택 프로젝트입니다.
+
+상품 목록 조회와 검색, 상품 등록 폼 검증, 상품 CRUD API를 구현했으며 MongoDB Atlas에 상품 데이터를 저장합니다.
+
+## 배포
+
+- Backend API: https://one5-sprint-mission-be-okq9.onrender.com
 
 ## 기술 스택
+
+### Frontend
+
+- React 19
+- React Router
+- Create React App
+- CSS
+
+### Backend
 
 - Node.js 26
 - Express 5
 - MongoDB Atlas
 - Mongoose
-- ESLint, Prettier
+- postman
+
+### Code Quality
+
+- ESLint
+- Prettier
 
 ## 시작하기
 
@@ -126,4 +146,4 @@ MongoDB 연결 성공
 - [x] 상품 부분 수정과 입력값 검증
 - [x] 상품 삭제 API
 - [x] 상품 목록 조회, offset 페이지네이션, 최신순 정렬, 검색
-- [ ] Render 배포
+- [x] Render 배포
