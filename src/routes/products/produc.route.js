@@ -5,6 +5,8 @@ import { validateProductsPagination } from './middlewares/vaildate-products-pagi
 import { NotFoundException } from '#src/error/not-found-exception.js';
 
 export const ProductsRouter = express.Router();
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 
 //GET Pagination
 ProductsRouter.get('/',validateProductsPagination, async (req, res, next)=>{
@@ -16,8 +18,8 @@ ProductsRouter.get('/',validateProductsPagination, async (req, res, next)=>{
     const filter = search
       ? {
           $or: [
-            { name: { $regex: search, $options: 'i' } },
-            { description: { $regex: search, $options: 'i' } },
+            { name: { $regex:escapeRegex(search), $options: 'i' } },
+            { description: { $regex: escapeRegex(search), $options: 'i' } },
           ],
         }
       : { };
@@ -96,19 +98,21 @@ ProductsRouter.patch('/:id',async (req, res, next)=>{
     const { id } = req.params;
     const { name, description, price, tags } = req.body ?? {} ;  
 
-    const product = await Product.findById(id);
-    if(!product) throw new NotFoundException('상품을 찾을 수 없습니다.');
+    // 실제로 보내준 필드만 골라서 업데이트 객체 생성
+    const updateFields = {};
+    if (name !== undefined) updateFields.name = name;
+    if (description !== undefined) updateFields.description = description;
+    if (price !== undefined) updateFields.price = price;
+    if (tags !== undefined) updateFields.tags = tags;
 
-    const updatedItem = await Product.findByIdAndUpdate(
-      id,
-      {
-      name,
-      description,
-      price,
-      tags, 
-      },
-      { new: true }
-    );
+    const updatedItem = await Product.findByIdAndUpdate(id, updateFields, {
+      new: true,
+      runValidators: true,  
+    });
+
+    if(!updatedItem ){
+      throw new NotFoundException('상품을 찾을 수 없습니다.');
+    } 
 
     res.status(200).json({
     success: true,
@@ -125,11 +129,11 @@ ProductsRouter.patch('/:id',async (req, res, next)=>{
 ProductsRouter.delete('/:id',async (req, res, next)=>{
   try{
     const { id } = req.params;
+    const deletedItem  = await Product.findByIdAndDelete(id);
 
-    const product = await Product.findById(id);
-    if(!product) throw new NotFoundException('상품을 찾을 수 없습니다.');
-
-    await Product.findByIdAndDelete(id);
+    if(!deletedItem ){
+      throw new NotFoundException('상품을 찾을 수 없습니다.');
+    } 
 
     res.status(204).json();
 

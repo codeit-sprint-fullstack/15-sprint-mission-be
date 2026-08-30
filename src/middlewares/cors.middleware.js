@@ -1,4 +1,4 @@
-import { ForbiddenException } from "#src/error/forbidden-exception.js";
+import { ForbiddenException } from '#src/error/forbidden-exception.js';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
