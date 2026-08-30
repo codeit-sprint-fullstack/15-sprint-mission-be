@@ -2,11 +2,12 @@ import express from 'express';
 import { ERROR_MESSAGES, HTTP_STATUS } from '#constants';
 import { BadRequestException } from '#errors';
 import { commentRepository } from '#repositories';
+import { parseIdParam } from './query-parsers.js';
 
 export const commentsRouter = express.Router();
 
 commentsRouter.patch('/:commentId', async (req, res) => {
-  const { commentId } = req.params;
+  const commentId = parseIdParam(req.params.commentId);
   const { content } = req.body ?? {};
 
   if (!content) {
@@ -19,7 +20,7 @@ commentsRouter.patch('/:commentId', async (req, res) => {
 });
 
 commentsRouter.delete('/:commentId', async (req, res) => {
-  const { commentId } = req.params;
+  const commentId = parseIdParam(req.params.commentId);
 
   await commentRepository.remove(commentId);
 

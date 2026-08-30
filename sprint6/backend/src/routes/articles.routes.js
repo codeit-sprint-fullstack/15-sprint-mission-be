@@ -2,7 +2,11 @@ import express from 'express';
 import { ERROR_MESSAGES, HTTP_STATUS } from '#constants';
 import { BadRequestException, NotFoundException } from '#errors';
 import { articleRepository, commentRepository } from '#repositories';
-import { parseCursorQuery, parseListQuery } from './query-parsers.js';
+import {
+  parseCursorQuery,
+  parseIdParam,
+  parseListQuery,
+} from './query-parsers.js';
 
 export const articlesRouter = express.Router();
 
@@ -27,7 +31,7 @@ articlesRouter.get('/', async (req, res) => {
 });
 
 articlesRouter.get('/:articleId', async (req, res) => {
-  const { articleId } = req.params;
+  const articleId = parseIdParam(req.params.articleId);
 
   const article = await articleRepository.findById(articleId);
   if (!article) {
@@ -38,7 +42,7 @@ articlesRouter.get('/:articleId', async (req, res) => {
 });
 
 articlesRouter.patch('/:articleId', async (req, res) => {
-  const { articleId } = req.params;
+  const articleId = parseIdParam(req.params.articleId);
   const { title, content } = req.body ?? {};
 
   if (title == null && content == null) {
@@ -54,7 +58,7 @@ articlesRouter.patch('/:articleId', async (req, res) => {
 });
 
 articlesRouter.delete('/:articleId', async (req, res) => {
-  const { articleId } = req.params;
+  const articleId = parseIdParam(req.params.articleId);
 
   await articleRepository.remove(articleId);
 
@@ -62,7 +66,7 @@ articlesRouter.delete('/:articleId', async (req, res) => {
 });
 
 articlesRouter.post('/:articleId/comments', async (req, res) => {
-  const { articleId } = req.params;
+  const articleId = parseIdParam(req.params.articleId);
   const { content } = req.body ?? {};
 
   if (!content) {
@@ -76,14 +80,14 @@ articlesRouter.post('/:articleId/comments', async (req, res) => {
 
   const comment = await commentRepository.create({
     content,
-    articleId: Number(articleId),
+    articleId,
   });
 
   return res.status(HTTP_STATUS.CREATED).json({ success: true, data: comment });
 });
 
 articlesRouter.get('/:articleId/comments', async (req, res) => {
-  const { articleId } = req.params;
+  const articleId = parseIdParam(req.params.articleId);
   const { limit, cursor } = parseCursorQuery(req.query);
 
   const article = await articleRepository.findById(articleId);
@@ -92,7 +96,7 @@ articlesRouter.get('/:articleId/comments', async (req, res) => {
   }
 
   const data = await commentRepository.findAllByParent({
-    articleId: Number(articleId),
+    articleId,
     cursor,
     limit,
   });

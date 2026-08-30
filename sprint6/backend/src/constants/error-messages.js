@@ -14,4 +14,5 @@ export const ERROR_MESSAGES = {
   LIST_QUERY_INVALID: 'offset, limit, sort 값이 올바르지 않습니다.',
   SORT_OPTION_INVALID: '지원하지 않는 정렬 기준입니다.',
   CURSOR_QUERY_INVALID: 'cursor 값이 올바르지 않습니다.',
+  ID_PARAM_INVALID: '요청 경로의 id가 올바르지 않습니다.',
 };

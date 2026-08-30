@@ -32,3 +32,11 @@ export function parseCursorQuery(query) {
 
   return { limit, cursor: cursor != null ? Number(cursor) : null };
 }
+
+export function parseIdParam(value) {
+  if (!/^\d+$/.test(String(value))) {
+    throw new BadRequestException(ERROR_MESSAGES.ID_PARAM_INVALID);
+  }
+
+  return Number(value);
+}

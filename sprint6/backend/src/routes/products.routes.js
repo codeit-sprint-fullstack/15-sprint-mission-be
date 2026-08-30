@@ -2,7 +2,11 @@ import express from 'express';
 import { ERROR_MESSAGES, HTTP_STATUS } from '#constants';
 import { BadRequestException, NotFoundException } from '#errors';
 import { commentRepository, productRepository } from '#repositories';
-import { parseCursorQuery, parseListQuery } from './query-parsers.js';
+import {
+  parseCursorQuery,
+  parseIdParam,
+  parseListQuery,
+} from './query-parsers.js';
 
 export const productsRouter = express.Router();
 
@@ -32,7 +36,7 @@ productsRouter.get('/', async (req, res) => {
 });
 
 productsRouter.get('/:productId', async (req, res) => {
-  const { productId } = req.params;
+  const productId = parseIdParam(req.params.productId);
 
   const product = await productRepository.findById(productId);
   if (!product) {
@@ -43,7 +47,7 @@ productsRouter.get('/:productId', async (req, res) => {
 });
 
 productsRouter.patch('/:productId', async (req, res) => {
-  const { productId } = req.params;
+  const productId = parseIdParam(req.params.productId);
   const { name, description, price, tags } = req.body ?? {};
 
   if (name == null && description == null && price == null && tags == null) {
@@ -61,7 +65,7 @@ productsRouter.patch('/:productId', async (req, res) => {
 });
 
 productsRouter.delete('/:productId', async (req, res) => {
-  const { productId } = req.params;
+  const productId = parseIdParam(req.params.productId);
 
   await productRepository.remove(productId);
 
@@ -69,7 +73,7 @@ productsRouter.delete('/:productId', async (req, res) => {
 });
 
 productsRouter.post('/:productId/comments', async (req, res) => {
-  const { productId } = req.params;
+  const productId = parseIdParam(req.params.productId);
   const { content } = req.body ?? {};
 
   if (!content) {
@@ -83,14 +87,14 @@ productsRouter.post('/:productId/comments', async (req, res) => {
 
   const comment = await commentRepository.create({
     content,
-    productId: Number(productId),
+    productId,
   });
 
   return res.status(HTTP_STATUS.CREATED).json({ success: true, data: comment });
 });
 
 productsRouter.get('/:productId/comments', async (req, res) => {
-  const { productId } = req.params;
+  const productId = parseIdParam(req.params.productId);
   const { limit, cursor } = parseCursorQuery(req.query);
 
   const product = await productRepository.findById(productId);
@@ -99,7 +103,7 @@ productsRouter.get('/:productId/comments', async (req, res) => {
   }
 
   const data = await commentRepository.findAllByParent({
-    productId: Number(productId),
+    productId,
     cursor,
     limit,
   });
