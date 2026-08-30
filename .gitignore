@@ -1,0 +1,10 @@
+
+# 설치된 패키지
+node_modules/
+
+# 비밀 환경 변수
+.env
+
+# 로컬 AI 작업 지침
+AGENTS.md
+CLAUDE.md

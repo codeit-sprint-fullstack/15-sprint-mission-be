@@ -1,0 +1,111 @@
+.global-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: var(--header-height);
+  padding: 0 16px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo-link {
+  /* 모바일에서는 PC 로고에서 글자 영역만 잘라서 표시합니다. */
+  display: block;
+  flex: 0 0 81px;
+  width: 81px;
+  height: 40px;
+  margin-right: 8px;
+  overflow: hidden;
+}
+
+.header-logo {
+  /* 기존 153px SVG를 축소하고 판다 아이콘 영역을 화면 밖으로 이동합니다. */
+  display: block;
+  width: 124px;
+  max-width: none;
+  transform: translateX(-40px);
+}
+
+.header-nav-list {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.header-nav-link {
+  color: #4b5563;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 26px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.header-nav-link:hover {
+  color: #3692ff;
+}
+
+.header-nav-link-active {
+  color: #3692ff;
+}
+
+.login-button {
+  flex: 0 0 auto;
+  height: 42px;
+  padding: 12px 23px;
+
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #3692ff;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@media (min-width: 744px) {
+  .global-header {
+    padding: 0 24px;
+  }
+
+  .header-logo-link {
+    /* 태블릿 이상에서는 판다 얼굴이 포함된 전체 로고를 표시합니다. */
+    flex-basis: auto;
+    width: auto;
+    height: auto;
+    margin-right: 35px;
+    overflow: visible;
+  }
+
+  .header-logo {
+    width: 153px;
+    transform: none;
+  }
+
+  .header-nav-list {
+    gap: 36px;
+  }
+
+  .header-nav-link {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .global-header{
+    padding-right: max(24px, calc((100% - 1520px) /2));
+    padding-left: max(24px, calc((100% - 1520px) / 2));
+  }
+}

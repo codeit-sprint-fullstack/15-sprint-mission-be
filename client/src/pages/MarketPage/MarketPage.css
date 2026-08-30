@@ -1,0 +1,327 @@
+.market-page {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+
+.market-section + .market-section {
+  margin-top: 80px;
+}
+
+.market-section-title {
+  margin: 0 0 24px;
+  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* .market-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+
+.market-section-header .market-section-title {
+  margin-bottom: 0;
+} */
+
+.market-section-header {
+  display: grid;
+
+  /* PC에서는 제목, 검색창, 등록 버튼, 정렬 메뉴를 한 줄로 배치합니다. */
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.market-section-header .market-section-title,
+.market-section-header .market-search-form,
+.market-section-header .market-sort-select {
+  margin-bottom: 0;
+}
+
+.market-section-header .market-search-form {
+  width: 100%;
+  max-width: 325px;
+  justify-self: end;
+}
+
+.product-register-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 42px;
+  padding: 12px 23px;
+  border: 0;
+  border-radius: 8px;
+
+  background-color: #3692ff;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.market-search-form {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  border-radius: 12px;
+  gap: 8px;
+  margin-bottom: 12px;
+  background-color: #f3f4f6;
+}
+
+.market-search-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  font-size: 16px;
+}
+
+.market-search-form button {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.market-sort-icon {
+  display: none;
+}
+
+.market-sort-select,
+.market-sort-select::picker(select) {
+  appearance: base-select;
+}
+
+/* 펼쳐지는 옵션 목록의 바깥 상자 */
+.market-sort-select::picker(select) {
+  position-area: block-end span-inline-end;
+  position-try-order: normal;
+
+  margin-top: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+
+.market-sort-select {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+  width: 130px;
+  height: 42px;
+  margin: 0;
+  padding: 12px 20px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background-color: #ffffff;
+
+  color: #1f2937;
+  font-size: 16px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+/* 펼쳐진 목록 안의 각 옵션 */
+.market-sort-select option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+
+  box-sizing: border-box;
+  min-height: 42px;
+  padding: 12px 20px;
+
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #ffffff;
+
+  color: #1f2937;
+  font-size: 16px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+/* 마지막 옵션 아래에는 구분선을 표시하지 않음 */
+.market-sort-select option:last-child {
+  border-bottom: 0;
+}
+
+/* 선택된 옵션 왼쪽의 기본 체크 표시 제거 */
+.market-sort-select option::checkmark {
+  display: none;
+}
+
+/* 선택된 옵션도 흰색 배경과 검은 글자로 표시 */
+.market-sort-select option:checked {
+  background-color: #ffffff;
+  color: #1f2937;
+}
+
+/* .market-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.market-controls .market-search-form {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.market-controls .market-sort-select {
+  margin-bottom: 0;
+} */
+
+.best-items-grid,
+.all-items-grid {
+  display: grid;
+}
+
+.best-items-grid {
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.all-items-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 8px;
+}
+
+.market-status {
+  margin: 0;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.market-status-error {
+  color: #dc2626;
+}
+
+@media (min-width: 744px) {
+  .market-page {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .best-items-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .all-items-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 16px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .market-page {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .best-items-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .all-items-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 40px 24px;
+  }
+}
+
+@media (max-width: 743px) {
+  .market-page {
+    padding-top: 17px;
+  }
+
+  .market-section-header {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) 42px;
+    grid-template-areas:
+      "title title"
+      "search sort";
+
+    column-gap: 14px;
+    row-gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .market-section-header .market-section-title {
+    grid-area: title;
+    display: flex;
+    align-items: center;
+    height: 42px;
+  }
+
+  .market-section-header .market-search-form {
+    grid-area: search;
+    width: 100%;
+    max-width: none;
+    height: 42px;
+    padding: 9px 16px;
+    justify-self: stretch;
+  }
+
+  .product-register-button {
+    position: absolute;
+    top: 0;
+    right: 45px;
+    width: 133px;
+    height: 42px;
+  }
+
+  .market-sort-control {
+    position: relative;
+    grid-area: sort;
+    width: 42px;
+    height: 42px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background-color: #ffffff;
+  }
+
+  .market-sort-icon {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .market-sort-control .market-sort-select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
