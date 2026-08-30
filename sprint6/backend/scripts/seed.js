@@ -11,7 +11,13 @@ const NUM_PRODUCTS_TO_CREATE = 10;
 const NUM_ARTICLES_TO_CREATE = 10;
 const NUM_COMMENTS_PER_PARENT = 3;
 
-const PRODUCT_TAG_POOL = ['인기', '신상품', '리퍼', '한정판', '무료배송'];
+const PRODUCT_TAG_POOL = [
+  'Best',
+  'New',
+  'Refurbished',
+  'Limited',
+  'Free Shipping',
+];
 
 const makeProductInput = () => ({
   name: faker.commerce.productName(),
