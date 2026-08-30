@@ -25,8 +25,6 @@
     "seed": "node --env-file=./env/.env.development ./scripts/seed.js --allow-reset=panda_market",
     "seed:insert": "node --env-file=./env/.env.development ./scripts/seed.js --no-reset",
     "start": "node ./src/server.js",
-    "test:api": "newman run postman/panda-market.postman_collection.json -e postman/env/panda-market.production.postman_environment.json -r htmlextra,cli --reporter-htmlextra-export postman/reports/api-test-report.html",
-    "test:api:local": "newman run postman/panda-market.postman_collection.json -e postman/env/panda-market.local.postman_environment.json -r htmlextra,cli --reporter-htmlextra-export postman/reports/api-test-report.local.html",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint ."
@@ -48,8 +46,6 @@
     "@faker-js/faker": "^10.6.0",
     "dotenv-cli": "^11.0.0",
     "eslint": "^10.8.1",
-    "newman": "^6.2.2",
-    "newman-reporter-htmlextra": "^1.23.1",
     "nodemon": "^3.1.14",
     "prettier": "^3.9.6",
     "prisma": "^7.10.0"
