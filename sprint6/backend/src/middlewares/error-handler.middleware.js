@@ -1,5 +1,5 @@
 import { isDevelopment } from '#config';
-import { HTTP_STATUS, PRISMA_ERROR } from '#constants';
+import { ERROR_MESSAGES, HTTP_STATUS, PRISMA_ERROR } from '#constants';
 import { HttpException } from '#errors';
 import { Prisma } from '#generated/prisma/client.ts';
 
@@ -31,10 +31,16 @@ export const errorHandler = (error, _req, res, next) => {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     switch (error.code) {
       case PRISMA_ERROR.UNIQUE_CONSTRAINT: {
-        return res.status(HTTP_STATUS.CONFLICT).json();
+        return res.status(HTTP_STATUS.CONFLICT).json({
+          success: false,
+          message: ERROR_MESSAGES.DUPLICATE_RESOURCE,
+        });
       }
       case PRISMA_ERROR.RECORD_NOT_FOUND: {
-        return res.status(HTTP_STATUS.NOT_FOUND).json();
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          success: false,
+          message: ERROR_MESSAGES.RESOURCE_NOT_FOUND,
+        });
       }
     }
   }

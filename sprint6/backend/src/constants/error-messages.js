@@ -1,5 +1,6 @@
 export const ERROR_MESSAGES = {
   RESOURCE_NOT_FOUND: '요청한 리소스를 찾을 수 없습니다.',
+  DUPLICATE_RESOURCE: '이미 존재하는 데이터입니다.',
   PRODUCT_NOT_FOUND: '해당 id의 상품을 찾을 수 없습니다.',
   ARTICLE_NOT_FOUND: '해당 id의 게시글을 찾을 수 없습니다.',
   COMMENT_NOT_FOUND: '해당 id의 댓글을 찾을 수 없습니다.',
