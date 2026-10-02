@@ -1,0 +1,72 @@
+# ==========================================
+# Dependencies & Package Managers
+# ==========================================
+node_modules/
+.pnpm-store/
+pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==========================================
+# Environment Variables & Secrets
+# ==========================================
+# 보안상 중요한 실제 환경 변수 파일은 Git 추적에서 제외합니다.
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# 예외: 환경 변수 구조 템플릿(.env.example 등)은 팀 공유를 위해 추적에 포함
+!env/.env.example
+!.env.example
+
+# ==========================================
+# Prisma & Database
+# ==========================================
+# 로컬 SQLite DB나 개발용 덤프/마이그레이션 임시 파일 제외
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+
+# ==========================================
+# Logs & Runtime Data
+# ==========================================
+logs/
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# ==========================================
+# OS & IDE System Files
+# ==========================================
+# macOS
+.DS_Store
+.apple-desktop
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VSCode & JetBrains
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+
+# ==========================================
+# Build & Coverage (추후 모듈 확장 대비)
+# ==========================================
+dist/
+build/
+coverage/
+.nyc_output/
+.temp/
+.tmp/
