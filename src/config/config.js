@@ -12,6 +12,12 @@ const envSchema = z.object({
     .enum(["development", "production", "test"])
     .default("development"),
   PORT: z.coerce.number().int().min(1000).max(65535).default(5001),
+  DATABASE_URL: z
+    .url()
+    .refine(
+      (url) => url.startsWith("postgresql:") || url.startsWith("postgres:"),
+      "PostgreSQL 연결 URL이어야 합니다.",
+    ),
 });
 
 const parseEnvironment = () => {
@@ -19,6 +25,7 @@ const parseEnvironment = () => {
     return envSchema.parse({
       NODE_ENV: process.env.NODE_ENV,
       PORT: process.env.PORT,
+      DATABASE_URL: process.env.DATABASE_URL,
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -30,7 +37,6 @@ const parseEnvironment = () => {
 
 export const config = parseEnvironment();
 
-// 환경별 헬퍼 함수들
-export const isDevelopment = config.NODE_ENV === "development"; // boolean
-export const isProduction = config.NODE_ENV === "production"; // boolean
-export const isTest = config.NODE_ENV === "test"; // boolean
+export const isDevelopment = config.NODE_ENV === "development";
+export const isProduction = config.NODE_ENV === "production";
+export const isTest = config.NODE_ENV === "test";

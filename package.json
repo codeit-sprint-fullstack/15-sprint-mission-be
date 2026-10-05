@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node src/server.js",
+    "dev": "nodemon --env-file=./env/.env.development ./src/server.js",
+    "prisma:generate": "dotenv -e ./env/.env.development -- npx prisma generate",
+    "prisma:migrate": "dotenv -e ./env/.env.development -- npx prisma migrate dev",
+    "seed": "node --env-file=./env/.env.development scripts/seed.js --allow-reset=sprint_mission",
     "lint": "eslint \"src/**/*.js\"",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "start" : "node src/server.js"
+    "start": "node src/server.js",
+    "postinstall": "prisma skills sync || exit 0"
   },
   "repository": {
     "type": "git",
@@ -19,22 +23,27 @@
   "license": "ISC",
   "type": "module",
   "imports": {
-    "#src/*": "./src/*"
+    "#src/*": "./src/*",
+    "#generated/*": "./generated/*"
   },
   "bugs": {
     "url": "https://github.com/thcjfd/15-sprint-mission-be/issues"
   },
   "homepage": "https://github.com/thcjfd/15-sprint-mission-be#readme",
   "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "express": "^5.2.1",
-    "mongoose": "^9.9.3",
+    "nodemon": "^3.1.14",
+    "pg": "^8.23.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@faker-js/faker": "^10.6.0",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^10.9.0",
-    "prettier": "^3.9.6"
+    "prettier": "^3.9.6",
+    "prisma": "^7.10.0"
   }
 }
