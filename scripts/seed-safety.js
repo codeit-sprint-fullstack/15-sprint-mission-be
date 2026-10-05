@@ -27,8 +27,11 @@ export function assertSafeSeedTarget({ databaseUrl, nodeEnv, args }) {
   return true;
 }
 
-export function resetProductsData(prisma) {
+export function resetAllData(prisma) {
   return prisma.$transaction([
+    prisma.productComment.deleteMany(),
+    prisma.articleComment.deleteMany(),
     prisma.product.deleteMany(),
+    prisma.article.deleteMany(),
   ]);
 }
