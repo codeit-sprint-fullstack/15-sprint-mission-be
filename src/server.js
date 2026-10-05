@@ -1,25 +1,22 @@
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from 'dotenv';
 import cors from 'cors';
 
-import productRoutes from "#src/routes/productRoutes.js";
+import productRouter from "#src/routes/productRouter.js";
 import {config} from "#src/config/config.js";
-
-dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 try {
-  await mongoose.connect(process.env.MONGO_URI);
+  await mongoose.connect(config.MONGO_URI);
   console.log('MongoDB Atlas 연결 성공!');
 } catch (err) {
   console.error('MongoDB Atlas 연결 실패:', err);
 }
 
-app.use("/products", productRoutes);
+app.use("/products", productRouter);
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {

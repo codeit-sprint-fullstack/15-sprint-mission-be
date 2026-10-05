@@ -1,9 +1,9 @@
 import express from "express";
 import Product from "#src/models/Product.js";
 
-const router = express.Router();
+const productRouter = express.Router();
 
-router.post("/", async (req, res) => {
+productRouter.post("/", async (req, res) => {
   try {
     const { name, description, price, tags } = req.body;
 
@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+productRouter.get("/", async (req, res) => {
   try {
     const { page = 1, pageSize = 10, keyword, orderBy = "recent" } = req.query;
 
@@ -65,7 +65,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+productRouter.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -88,7 +88,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.patch("/:id", async (req, res) => {
+productRouter.patch("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -112,7 +112,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+productRouter.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deletedProduct = await Product.findByIdAndDelete(id);
@@ -133,4 +133,4 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-export default router;
+export default productRouter;

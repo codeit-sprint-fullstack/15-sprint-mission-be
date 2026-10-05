@@ -12,6 +12,7 @@ const envSchema = z.object({
     .enum(["development", "production", "test"])
     .default("development"),
   PORT: z.coerce.number().int().min(1000).max(65535).default(5001),
+  MONGO_URI: z.string().min(1, "MONGO_URI는 필수입니다."),
 });
 
 const parseEnvironment = () => {
@@ -30,7 +31,6 @@ const parseEnvironment = () => {
 
 export const config = parseEnvironment();
 
-// 환경별 헬퍼 함수들
-export const isDevelopment = config.NODE_ENV === "development"; // boolean
-export const isProduction = config.NODE_ENV === "production"; // boolean
-export const isTest = config.NODE_ENV === "test"; // boolean
+export const isDevelopment = config.NODE_ENV === "development";
+export const isProduction = config.NODE_ENV === "production"; 
+export const isTest = config.NODE_ENV === "test"; 
