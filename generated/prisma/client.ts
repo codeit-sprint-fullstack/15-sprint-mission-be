@@ -46,3 +46,18 @@ export { Prisma }
  * 
  */
 export type Product = Prisma.ProductModel
+/**
+ * Model Article
+ * 
+ */
+export type Article = Prisma.ArticleModel
+/**
+ * Model ProductComment
+ * 
+ */
+export type ProductComment = Prisma.ProductCommentModel
+/**
+ * Model ArticleComment
+ * 
+ */
+export type ArticleComment = Prisma.ArticleCommentModel

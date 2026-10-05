@@ -7,35 +7,52 @@ datasource db {
     provider = "postgresql"
 }
 
-model Product{
-    id Int @id @default(autoincrement())
-    name String
+model Product {
+    id          Int      @id @default(autoincrement())
+    name        String
     description String
-    price Int
-    tags String[]
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    price       Int
+    tags        String[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    
+    comments ProductComment[]
 
     @@map("products")
 }
 
-model Article{
-    id Int @id @default(autoincrement())
-    title String
-    content String?
+model Article {
+    id        Int      @id @default(autoincrement())
+    title     String
+    content   String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    comments Comment[]
+    comments ArticleComment[]
 
     @@map("articles")
 }
 
-model Comment{
-    id Int @id @default(autoincrement())
-    content String
+model ProductComment {
+    id        Int      @id @default(autoincrement())
+    content   String
     createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    productId Int
+    product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    @@map("product_comments")
+}
+
+model ArticleComment {
+    id        Int      @id @default(autoincrement())
+    content   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     articleId Int
-    article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+    article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+    @@map("article_comments")
 }
