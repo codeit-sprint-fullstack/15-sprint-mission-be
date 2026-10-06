@@ -31,6 +31,9 @@ yarn-error.log*
 *.sqlite
 *.sqlite-journal
 
+# Prisma Generated Files
+src/generated/
+
 # ==========================================
 # Logs & Runtime Data
 # ==========================================
