@@ -1,4 +1,5 @@
 import express from 'express';
+import { articleRoute } from './article.route.js';
 
 export const router = express.Router();
 
@@ -8,3 +9,5 @@ router.get('/health', (req, res) => {
     message: new Date(),
   });
 });
+
+router.use('/articles', articleRoute);

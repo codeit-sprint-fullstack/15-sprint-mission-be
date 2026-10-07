@@ -172,6 +172,9 @@ importers:
       '@prisma/client':
         specifier: ^7.10.0
         version: 7.10.0(prisma@7.10.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))
+      '@prisma/client-runtime-utils':
+        specifier: ^7.10.0
+        version: 7.10.0
       express:
         specifier: ^5.2.1
         version: 5.2.1
