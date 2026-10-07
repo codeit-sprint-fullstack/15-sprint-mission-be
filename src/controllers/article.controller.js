@@ -21,7 +21,7 @@ export const getArticle = async (req, res) => {
 
   const article = await articleService.getArticleByIdService(id);
 
-  return res.status(HTTP_STATUS.OK).json({
+  res.status(HTTP_STATUS.OK).json({
     success: true,
     data: article,
     message: '게시글 조회에 성공했습니다.',
@@ -38,7 +38,7 @@ export const updateArticle = async (req, res) => {
     content,
   });
 
-  return res.status(HTTP_STATUS.OK).json({
+  res.status(HTTP_STATUS.OK).json({
     success: true,
     data: updatedArticle,
     message: '게시글 수정에 성공했습니다.',
@@ -49,7 +49,7 @@ export const deleteArticle = async (req, res) => {
   const { id } = req.validated.params;
   const deletedArticle = await articleService.deleteArticleById(id);
 
-  return res.status(HTTP_STATUS.OK).json({
+  res.status(HTTP_STATUS.OK).json({
     success: true,
     data: deletedArticle,
     message: '게시글 삭제에 성공했습니다.',
@@ -61,7 +61,7 @@ export const getArticles = async (req, res, next) => {
     const query = req.validated.query;
     const result = await articleService.getArticlesService(query);
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       data: result,
       message: '게시글 목록 조회에 성공했습니다.',
