@@ -44,3 +44,25 @@ export const deleteReply = async (id) => {
     data: { deletedAt: new Date() },
   });
 };
+
+export const findRepliesByArticleId = async ({ articleId, limit, cursor }) => {
+  return await prisma.articleReply.findMany({
+    where: {
+      articleId,
+      deletedAt: null,
+    },
+    ...(cursor && { cursor: { id: cursor } }),
+    skip: cursor ? 1 : 0,
+    take: limit,
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: {
+      id: true,
+      articleId: true,
+      content: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+};

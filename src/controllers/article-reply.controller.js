@@ -43,3 +43,19 @@ export const deleteReply = async (req, res) => {
     message: '댓글이 성공적으로 삭제되었습니다.',
   });
 };
+
+export const getRelies = async (req, res) => {
+  const { articleId, limit, cursor } = req.validated.query;
+
+  const result = await articleReplyService.getRepliesService({
+    articleId,
+    limit,
+    cursor,
+  });
+
+  res.status(HTTP_STATUS.OK).json({
+    success: true,
+    data: result,
+    message: '댓글 목록 조회에 성공했습니다.',
+  });
+};

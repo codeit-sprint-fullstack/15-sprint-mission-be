@@ -43,3 +43,24 @@ export const deleteReplyService = async (id) => {
 
   return deletedReply;
 };
+
+export const getRepliesService = async ({ articleId, limit, cursor }) => {
+  const article = await articleRepository.findArticleById(articleId);
+  if (!article) {
+    throw new NotFoundException(ERROR_MESSAGES.ARTICLE.NOT_FOUND);
+  }
+
+  const replies = await articleReplyRepository.findRepliesByArticleId({
+    articleId,
+    limit,
+    cursor,
+  });
+
+  const nextCursor =
+    replies.length === limit ? replies[replies.length - 1].id : null;
+
+  return {
+    list: replies,
+    nextCursor,
+  };
+};

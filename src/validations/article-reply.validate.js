@@ -27,3 +27,24 @@ export const getReplyParamsSchema = z.object({
     .int('댓글 ID는 정수여야 합니다.')
     .positive('댓글 ID는 양수여야 합니다.'),
 });
+
+export const getRepliesQuerySchema = z.object({
+  articleId: z.coerce
+    .number({
+      required_error: '게시글 ID는 필수입니다.',
+      invalid_type_error: '게시글 ID는 숫자여야합니다.',
+    })
+    .int('게시글 ID는 정수여야 합니다.')
+    .positive('게시글 ID는 양수여야 합니다.'),
+  limit: z.coerce
+    .number({ invalid_type_error: 'limit은 숫자여야 합니다.' })
+    .int('limit은 정수여야 합니다.')
+    .positive('limit은 양수여야 합니다.')
+    .max(100, '한 번에 최대 100개까지만 조회할 수 있습니다.')
+    .default(10),
+  cursor: z.coerce
+    .number({ invalid_type_error: 'cusor는 숫자여야 합니다.' })
+    .int('cursor는 정수여야 합니다.')
+    .positive('cursor는 양수여야 합니다.')
+    .optional(),
+});

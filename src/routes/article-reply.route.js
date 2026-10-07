@@ -2,9 +2,11 @@ import * as articleReplyController from '#src/controllers/article-reply.controll
 import {
   validateBody,
   validateParams,
+  validateQuery,
 } from '#src/middlewares/validate.middleware.js';
 import {
   createReplySchema,
+  getRepliesQuerySchema,
   getReplyParamsSchema,
   updateReplySchema,
 } from '#src/validations/article-reply.validate.js';
@@ -35,3 +37,8 @@ articleReplyRoute.delete(
 );
 
 // 댓글 목록 조회
+articleReplyRoute.get(
+  '/',
+  validateQuery(getRepliesQuerySchema),
+  articleReplyController.getRelies,
+);
