@@ -55,3 +55,18 @@ export const deleteArticle = async (req, res) => {
     message: '게시글 삭제에 성공했습니다.',
   });
 };
+
+export const getArticles = async (req, res, next) => {
+  try {
+    const query = req.validated.query;
+    const result = await articleService.getArticlesService(query);
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+      message: '게시글 목록 조회에 성공했습니다.',
+    });
+  } catch (error) {
+    next(error);
+  }
+};

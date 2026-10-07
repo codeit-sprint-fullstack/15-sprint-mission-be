@@ -49,3 +49,28 @@ export const deleteArticle = async (id) => {
     },
   });
 };
+
+export const findArticles = async ({ skip, take, where }) => {
+  const [list, totalCount] = await Promise.all([
+    prisma.article.findMany({
+      skip,
+      take,
+      where,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        createdAt: true,
+      },
+    }),
+    // 2. 조건에 부합하는 전체 게시글 개수 조회
+    prisma.article.count({
+      where,
+    }),
+  ]);
+
+  return { list, totalCount };
+};
