@@ -54,21 +54,10 @@ export const getArticlesService = async ({
   const skip = (page - 1) * pageSize;
   const take = pageSize;
 
-  const where = {
-    deletedAt: null,
-  };
-
-  if (search) {
-    where.OR = [
-      { title: { contains: search, mode: 'insensitive' } },
-      { content: { contains: search, mode: 'insensitive' } },
-    ];
-  }
-
   const { list, totalCount } = await articleRepository.findArticles({
     skip,
     take,
-    where,
+    search,
   });
 
   const totalPages = Math.ceil(totalCount / pageSize);

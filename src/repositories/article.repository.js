@@ -50,7 +50,18 @@ export const deleteArticle = async (id) => {
   });
 };
 
-export const findArticles = async ({ skip, take, where }) => {
+export const findArticles = async ({ skip, take, search }) => {
+  const where = {
+    deletedAt: null,
+  };
+
+  if (search) {
+    where.OR = [
+      { title: { contains: search, mode: 'insensitive' } },
+      { content: { contains: search, mode: 'insensitive' } },
+    ];
+  }
+
   const [list, totalCount] = await Promise.all([
     prisma.article.findMany({
       skip,
@@ -66,10 +77,7 @@ export const findArticles = async ({ skip, take, where }) => {
         createdAt: true,
       },
     }),
-    // 2. 조건에 부합하는 전체 게시글 개수 조회
-    prisma.article.count({
-      where,
-    }),
+    prisma.article.count({ where }),
   ]);
 
   return { list, totalCount };
