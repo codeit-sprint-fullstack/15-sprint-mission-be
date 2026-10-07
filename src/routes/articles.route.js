@@ -2,10 +2,15 @@ import express from 'express';
 import { articlesRepository } from '../repositories/article.repository.js';
 import { success } from 'zod';
 import { commentRouter } from './comment_route.js';
+import { validateArticle } from '../middlewares/article-validate.js';
+import {
+  createArticleSchema,
+  updateArticleSchema,
+} from '../schema/article.schema.js';
 
 export const articleRouter = express.Router();
 
-articleRouter.get('/:articleId', async (req, res, next) => {
+articleRouter.get('/:articleId', validateArticle, async (req, res, next) => {
   try {
     const articleId = req.params.articleId;
     const article = await articlesRepository.findById(articleId);
@@ -56,8 +61,8 @@ articleRouter.get('/', async (req, res, next) => {
 
 articleRouter.post('/', async (req, res, next) => {
   try {
-    const data = req.body;
-    console.log(req.body);
+    const data = createArticleSchema.parse(req.body);
+
     const newArticle = await articlesRepository.create(data);
     res.status(200).json({
       success: true,
@@ -69,10 +74,10 @@ articleRouter.post('/', async (req, res, next) => {
   }
 });
 
-articleRouter.patch('/:articleId', async (req, res, next) => {
+articleRouter.patch('/:articleId', validateArticle, async (req, res, next) => {
   try {
     const articleId = req.params.articleId;
-    const data = req.body;
+    const data = updateArticleSchema.parse(req.body);
     const updateArticle = await articlesRepository.update(articleId, data);
     res.status(200).json({
       success: true,
@@ -84,7 +89,7 @@ articleRouter.patch('/:articleId', async (req, res, next) => {
   }
 });
 
-articleRouter.delete('/:articleId', async (req, res, next) => {
+articleRouter.delete('/:articleId', validateArticle, async (req, res, next) => {
   try {
     const articleId = req.params.articleId;
     const deleteArticle = await articlesRepository.remove(articleId);

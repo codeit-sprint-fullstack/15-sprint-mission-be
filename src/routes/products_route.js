@@ -1,10 +1,12 @@
 import expressd from 'express';
 import { productRepository } from '../repositories/product.repository.js';
 import { commentRouter } from './comment_route.js';
+import { validateProduct } from '../middlewares/product-validate.js';
+import { createProductSchema } from '../schema/product.schema.js';
 
 export const productRouter = expressd.Router();
 
-productRouter.get('/:productId', async (req, res, next) => {
+productRouter.get('/:productId', validateProduct, async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const product = await productRepository.findById(productId);
@@ -57,7 +59,8 @@ productRouter.get('/', async (req, res, next) => {
 
 productRouter.post('/', async (req, res, next) => {
   try {
-    const data = req.body; // 나중에 검증 하는 거 zod 에 넣어야 함
+    const data = createProductSchema.parse(req.body); // 나중에 검증 하는 거 zod 에 넣어야 함
+
     const newProduct = await productRepository.create(data);
     res.status(200).json({
       success: true,
@@ -69,7 +72,7 @@ productRouter.post('/', async (req, res, next) => {
   }
 });
 
-productRouter.patch('/:productId', async (req, res, next) => {
+productRouter.patch('/:productId', validateProduct, async (req, res, next) => {
   try {
     const productId = req.params.productId;
     if (!productId) {
@@ -78,7 +81,7 @@ productRouter.patch('/:productId', async (req, res, next) => {
         message: '상품 아이디를 찾을 수 없습니다.',
       });
     }
-    const data = req.body;
+    const data = createProductSchema.parse(req.body);
     const updateData = await productRepository.update(productId, data);
     if (!updateData) {
       res.status(404).json({
@@ -95,7 +98,7 @@ productRouter.patch('/:productId', async (req, res, next) => {
   }
 });
 
-productRouter.delete('/:productId', async (req, res, next) => {
+productRouter.delete('/:productId', validateProduct, async (req, res, next) => {
   try {
     const productId = req.params.productId;
     if (!productId) {

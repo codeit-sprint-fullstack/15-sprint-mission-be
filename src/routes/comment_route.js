@@ -1,9 +1,14 @@
 import express from 'express';
 import { commentRepository } from '../repositories/comment.repository.js';
+import { validateComment } from '../middlewares/comment-validate.js';
+import {
+  createCommentSchema,
+  updateCommentSchema,
+} from '../schema/comment.schema.js';
 
 export const commentRouter = express.Router({ mergeParams: true });
 
-commentRouter.get('/:commentId', async (req, res, next) => {
+commentRouter.get('/:commentId', validateComment, async (req, res, next) => {
   try {
     const commentId = req.params.commentId;
     if (!commentId) {
@@ -70,7 +75,8 @@ commentRouter.post('/', async (req, res, next) => {
   try {
     const { productId, articleId } = req.params;
     console.log(productId, articleId);
-    const { content } = req.body;
+    const { content } = createCommentSchema.parse(req.body);
+    console.log(content);
     const newData = await commentRepository.create(
       content,
       productId,
@@ -86,10 +92,10 @@ commentRouter.post('/', async (req, res, next) => {
   }
 });
 
-commentRouter.patch('/:commentId', async (req, res, next) => {
+commentRouter.patch('/:commentId', validateComment, async (req, res, next) => {
   try {
     const commentId = req.params.commentId;
-    const data = req.body;
+    const data = updateCommentSchema.parse(req.body);
 
     if (!commentId) {
       res.status(400).json({
@@ -109,7 +115,7 @@ commentRouter.patch('/:commentId', async (req, res, next) => {
   }
 });
 
-commentRouter.delete('/:commentId', async (req, res, next) => {
+commentRouter.delete('/:commentId', validateComment, async (req, res, next) => {
   try {
     const commentId = req.params.commentId;
     if (!commentId) {

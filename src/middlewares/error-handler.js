@@ -1,5 +1,6 @@
 import { Prisma } from '#generated/prisma/client.ts';
 import { HttpException } from '../errors/http-exception.js';
+import { z } from 'zod';
 
 export const errorHandler = (error, _req, res, _next) => {
   if (error instanceof HttpException) {
@@ -32,7 +33,19 @@ export const errorHandler = (error, _req, res, _next) => {
     }
   }
 
-  res.status(500).json({
+  if (error instanceof z.ZodError) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: '요청 데이터가 올바르지 않습니다.',
+      errors: error.issues.map((issue) => ({
+        field: issue.path.join('.'),
+        message: issue.message,
+      })),
+    });
+  }
+
+  return res.status(500).json({
     message: 'Internal Server Error',
   });
 };
