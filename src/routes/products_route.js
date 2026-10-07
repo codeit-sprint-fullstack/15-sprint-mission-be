@@ -2,7 +2,10 @@ import expressd from 'express';
 import { productRepository } from '../repositories/product.repository.js';
 import { commentRouter } from './comment_route.js';
 import { validateProduct } from '../middlewares/product-validate.js';
-import { createProductSchema } from '../schema/product.schema.js';
+import {
+  createProductSchema,
+  updateProductSchema,
+} from '../schema/product.schema.js';
 
 export const productRouter = expressd.Router();
 
@@ -36,6 +39,12 @@ productRouter.get('/', async (req, res, next) => {
     ) {
       return res.status(400).json({
         message: 'page는 양의 정수, limit은 1~100의 정수여야 합니다.',
+      });
+    }
+
+    if (keyword !== undefined && typeof keyword !== 'string') {
+      return res.status(400).json({
+        message: 'keyword는 문자열이여야 합니다.',
       });
     }
 
@@ -81,7 +90,7 @@ productRouter.patch('/:productId', validateProduct, async (req, res, next) => {
         message: '상품 아이디를 찾을 수 없습니다.',
       });
     }
-    const data = createProductSchema.parse(req.body);
+    const data = updateProductSchema.parse(req.body);
     const updateData = await productRepository.update(productId, data);
     if (!updateData) {
       res.status(404).json({

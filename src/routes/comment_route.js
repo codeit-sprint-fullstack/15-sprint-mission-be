@@ -34,26 +34,24 @@ commentRouter.get('/', async (req, res, next) => {
     const { articleId, productId } = req.params;
     const { createdAt, id } = req.query;
 
-    const cursor =
-      createdAt != null && id != null ? { createdAt, id } : undefined;
-    console.log(cursor);
-    // if (!createdAt && !id) {
-    //   if (
-    //     typeof createdAt !== 'string' ||
-    //     typeof id !== 'string' ||
-    //     id.trim() === '' ||
-    //     Number.isNaN(new Date(createdAt).getTime())
-    //   ) {
-    //     return res.status(400).json({
-    //       message: '유효한 cursorCreatedAt과 cursorId를 함께 전달해 주세요.',
-    //     });
-    //   }
+    let cursor;
+    // createdAt이 날짜 형식인지
+    // 두 개 중 하나라도 들어온 경우에 인증 구간이 있어야 함
+    // 둘 다 없으면 그냥 일반적으로 작동되게 만들기
+    if (createdAt !== undefined || id !== undefined) {
+      if (
+        typeof createdAt !== 'string' ||
+        typeof id !== 'string' ||
+        id.trim() === '' ||
+        Number.isNaN(new Date(createdAt).getTime())
+      ) {
+        return res.status(400).json({
+          message: '유효한 createdAt과 id를 설정해주세요.',
+        });
+      }
 
-    //   cursor = {
-    //     createdAt,
-    //     id,
-    //   };
-    // }
+      cursor = { createdAt, id };
+    }
 
     const target = articleId ? { articleId } : { productId };
     console.log(target);

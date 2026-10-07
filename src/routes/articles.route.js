@@ -1,6 +1,5 @@
 import express from 'express';
 import { articlesRepository } from '../repositories/article.repository.js';
-import { success } from 'zod';
 import { commentRouter } from './comment_route.js';
 import { validateArticle } from '../middlewares/article-validate.js';
 import {
@@ -39,6 +38,12 @@ articleRouter.get('/', async (req, res, next) => {
     ) {
       return res.status(400).json({
         message: 'page는 양의 정수, limit은 1~100의 정수여야 합니다.',
+      });
+    }
+
+    if (keyword !== undefined && typeof keyword !== 'string') {
+      return res.status(400).json({
+        message: '검색 키워드는 문자열이여야 합니다.',
       });
     }
     const articles = await articlesRepository.findAll(
@@ -94,7 +99,7 @@ articleRouter.delete('/:articleId', validateArticle, async (req, res, next) => {
     const articleId = req.params.articleId;
     const deleteArticle = await articlesRepository.remove(articleId);
     res.status(200).json({
-      success: false,
+      success: true,
       data: deleteArticle,
       message: '게시글 삭제에 성공했습니다',
     });
