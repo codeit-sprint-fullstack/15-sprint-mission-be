@@ -28,5 +28,10 @@ articleReplyRoute.patch(
 );
 
 // 댓글 삭제
+articleReplyRoute.delete(
+  '/:id',
+  validateParams(getReplyParamsSchema),
+  articleReplyController.deleteReply,
+);
 
 // 댓글 목록 조회

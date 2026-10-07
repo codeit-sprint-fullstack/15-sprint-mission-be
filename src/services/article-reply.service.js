@@ -17,3 +17,29 @@ export const createReplyService = async ({ articleId, content }) => {
 
   return newReply;
 };
+
+export const updateReplyService = async ({ id, content }) => {
+  const existingReply = await articleReplyRepository.findReplyById(id);
+
+  if (!existingReply) {
+    throw new NotFoundException(ERROR_MESSAGES.REPLY.NOT_FOUND);
+  }
+
+  const updatedReply = await articleReplyRepository.updateReply({
+    id,
+    content,
+  });
+
+  return updatedReply;
+};
+
+export const deleteReplyService = async (id) => {
+  const existingReply = await articleReplyRepository.findReplyById(id);
+
+  if (!existingReply) {
+    throw new NotFoundException(ERROR_MESSAGES.REPLY.NOT_FOUND);
+  }
+  const deletedReply = await articleReplyRepository.deleteReply(id);
+
+  return deletedReply;
+};
