@@ -1,12 +1,42 @@
 import * as articleController from '#src/controllers/article.controller.js';
-import { validateBody } from '#src/middlewares/validate.middleware.js';
-import { createArticleSchema } from '#src/validations/article.validate.js';
+import {
+  validateBody,
+  validateParams,
+} from '#src/middlewares/validate.middleware.js';
+import {
+  createArticleSchema,
+  getArticleParamsSchema,
+  updateArticleSchema,
+} from '#src/validations/article.validate.js';
 import { Router } from 'express';
 
 export const articleRoute = Router();
 
+// 게시글 생성
 articleRoute.post(
   '/',
   validateBody(createArticleSchema),
   articleController.createArticle,
+);
+
+// 게시글 조회
+articleRoute.get(
+  '/:id',
+  validateParams(getArticleParamsSchema),
+  articleController.getArticle,
+);
+
+// 게시글 수정
+articleRoute.patch(
+  '/:id',
+  validateParams(getArticleParamsSchema),
+  validateBody(updateArticleSchema),
+  articleController.updateArticle,
+);
+
+// 게시글 삭제
+articleRoute.delete(
+  '/:id',
+  validateParams(getArticleParamsSchema),
+  articleController.deleteArticle,
 );
