@@ -1,0 +1,61 @@
+{
+  "name": "15-sprint-mission-be",
+  "version": "0.0.1",
+  "description": "",
+  "homepage": "https://github.com/Rasol07/15-sprint-mission-be#readme",
+  "bugs": {
+    "url": "https://github.com/Rasol07/15-sprint-mission-be/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rasol07/15-sprint-mission-be.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "imports": {
+    "#generated/*": "./generated/*",
+    "#config": "./src/config/config.js",
+    "#db/*": "./src/db/*",
+    "#constants": "./src/constants/index.js",
+    "#errors": "./src/errors/index.js",
+    "#middlewares": "./src/middlewares/index.js",
+    "#schemas": "./src/schemas/index.js",
+    "#repositories": "./src/repositories/index.js",
+    "#utils": "./src/utils/index.js"
+  },
+  "scripts": {
+    "prod": "node --env-file=./env/.env.production dist/src/server.js",
+    "dev": "nodemon --env-file=./env/.env.development src/server.js",
+    "prisma:generate": "dotenv -e ./env/.env.development -- npx prisma generate",
+    "prisma:migrate": "dotenv -e ./env/.env.development -- npx prisma migrate dev",
+    "prisma:studio": "dotenv -e ./env/.env.development -- npx prisma studio",
+    "seed": "node --env-file=./env/.env.development ./prisma/scripts/seed.js --allow-reset=prisma_market",
+    "start": "node src/server.js",
+    "lint": "eslint \"src/**/*.js\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=26 <27",
+    "npm": ">=11"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.9.4",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@faker-js/faker": "^10.6.0",
+    "dotenv-cli": "^11.0.0",
+    "eslint": "^10.9.1",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.9.6",
+    "prisma": "^7.9.1"
+  }
+}
