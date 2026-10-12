@@ -1,0 +1,49 @@
+{
+  "name": "15-sprint-mission6-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "engines": {
+    "node": "24.2.0"
+  },
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch --env-file=./env/.env.development src/server.js",
+    "lint": "eslint \"src/**/*.js\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prisma:generate": "dotenv -e ./env/.env.development -- prisma generate",
+    "prisma:migrate": "dotenv -e ./env/.env.development -- prisma migrate dev",
+    "prisma:studio": "dotenv -e ./env/.env.development -- prisma studio",
+    "postinstall": "prisma generate --schema=./prisma",
+    "seed:direct": "node --env-file=./env/.env.development scripts/seed.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.8.1",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.8.1",
+  "type": "module",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "@prisma/client-runtime-utils": "^7.10.0",
+    "express": "^5.2.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^11.0.0",
+    "eslint": "^10.11.0",
+    "prettier": "^3.9.9",
+    "prisma": "^7.10.0"
+  }
+}
