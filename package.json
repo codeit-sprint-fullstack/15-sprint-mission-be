@@ -1,0 +1,72 @@
+{
+  "name": "panda-market-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "판다마켓 스프린트 미션 6 백엔드 (Prisma + PostgreSQL)",
+  "main": "./src/main.js",
+  "type": "module",
+  "imports": {
+    "#common/*": "./src/common/*",
+    "#config": "./src/config/config.js",
+    "#prisma/*": "./src/prisma/*",
+    "#constants": "./src/common/constants/index.js",
+    "#exceptions": "./src/common/exceptions/index.js",
+    "#controllers": "./src/controllers/index.js",
+    "#middlewares": "./src/middlewares/index.js",
+    "#providers": "./src/providers/index.js",
+    "#repositories": "./src/repositories/index.js",
+    "#services": "./src/services/index.js"
+  },
+  "scripts": {
+    "dev": "nodemon --env-file=./env/.env.development ./src/main.js",
+    "contract:infer": "dotenv -e ./env/.env.development -- npx prisma contract infer --output ./src/prisma/contract.prisma",
+    "contract:emit": "dotenv -e ./env/.env.development -- npx prisma contract emit",
+    "db:sign": "dotenv -e ./env/.env.development -- npx prisma db sign",
+    "db:verify": "dotenv -e ./env/.env.development -- npx prisma db verify",
+    "migration:plan": "dotenv -e ./env/.env.development -- npx prisma migration plan",
+    "db:migrate": "dotenv -e ./env/.env.development -- npx prisma db migrate --advance-ref db",
+    "migration:status": "dotenv -e ./env/.env.development -- npx prisma migration status",
+    "seed": "node --env-file=./env/.env.development ./scripts/seed.js --allow-reset=panda_market",
+    "seed:insert": "node --env-file=./env/.env.development ./scripts/seed.js --no-reset",
+    "verify:api": "node --env-file=./env/.env.development ./scripts/verify-api.js",
+    "verify": "pnpm lint && pnpm test && pnpm db:verify && pnpm verify:api",
+    "start": "node ./src/main.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "test": "node --test",
+    "images:backfill": "node --env-file=./env/.env.development ./scripts/backfill-images.js",
+    "content:backfill": "node --env-file=./env/.env.development ./scripts/backfill-content.js",
+    "favorites:backfill": "node --env-file=./env/.env.development ./scripts/backfill-favorites.js",
+    "comments:backfill": "node --env-file=./env/.env.development ./scripts/backfill-comment-authors.js",
+    "users:cleanup": "node --env-file=./env/.env.development ./scripts/cleanup-verify-users.js"
+  },
+  "engines": {
+    "node": "24.x",
+    "npm": ">=11"
+  },
+  "packageManager": "pnpm@12.5.1",
+  "dependencies": {
+    "@prisma/orm-postgres": "8.0.0-rc.18",
+    "awilix": "^13.0.5",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "heic-convert": "^2.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.4.0",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@faker-js/faker": "^10.6.0",
+    "dotenv-cli": "^11.0.0",
+    "eslint": "^10.8.1",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.9.6",
+    "prisma": "^8.0.0-rc.23"
+  }
+}
